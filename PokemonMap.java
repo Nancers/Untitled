@@ -33,7 +33,7 @@ public class PokemonMap {
 
             System.out.println(locF + " not found in directory. \n");
         }
-        catch(IOException ex) {
+        catch(IOException e) {
 
             System.out.println("Error reading " + locF + "\n");
         }
@@ -67,7 +67,7 @@ public class PokemonMap {
 
             System.out.println(mapF + " not found in directory. \n");
         }
-        catch(IOException ex) {
+        catch(IOException e) {
 
             System.out.println("Error reading " + mapF + "\n");
         }
