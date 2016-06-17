@@ -78,5 +78,6 @@ public class PokemonMap {
     public static void main(String[] args) {
 
         HashMap<String, String[]> kanto = fillMap("locations.txt", "map.txt");
+        System.out.println("Finished filling map");
     }
 }
