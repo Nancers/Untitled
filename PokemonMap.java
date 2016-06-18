@@ -8,7 +8,7 @@ public class PokemonMap {
     public static HashMap<String, String[]> fillMap(String locF, String mapF) {
 
         //Part 1: Populate array of locations
-        String[] locations            = null;
+        ArrayList<String> locations   = new ArrayList<String>();
         HashMap<String, String[]> map = new HashMap<String, String[]>();
 
         // Read through locations.txt to make an array of locations
@@ -17,17 +17,19 @@ public class PokemonMap {
             FileReader file       = new FileReader(locF);
             BufferedReader buffer = new BufferedReader(file);
             String nextLine       = buffer.readLine();
-            StringBuffer locs     = new StringBuffer();
 
             while (nextLine != null) {
 
-                locs.append(nextLine + " ");
+                // Skip empty lines
+                if (nextLine.length() > 0) {
+
+                    locations.add(nextLine);
+                }
+
                 nextLine = buffer.readLine();
             }
 
             buffer.close();
-
-            locations = locs.toString().split(" ");
         }
         catch(FileNotFoundException e) {
 
@@ -38,7 +40,7 @@ public class PokemonMap {
             System.out.println("Error reading " + locF + "\n");
         }
 
-        // Part 2: Read through map.txt to get mapping of locations
+        // Create mapping relationship of locations from map.txt
         try {
 
             FileReader file       = new FileReader(mapF);
@@ -49,12 +51,12 @@ public class PokemonMap {
             while (nextLine != null) {
 
                 String[] indices = nextLine.split(" ");
-                String key    = locations[Integer.parseInt(indices[0])];
-                String[] vals = new String[indices.length-1];
+                String key       = locations.get(Integer.parseInt(indices[0]));
+                String[] vals    = new String[indices.length-1];
 
                 for (int i=1; i<indices.length; i++) {
 
-                    vals[i-1] = locations[Integer.parseInt(indices[i])];
+                    vals[i-1] = locations.get(Integer.parseInt(indices[i]));
                 }
 
                 map.put(key, vals);
@@ -75,9 +77,22 @@ public class PokemonMap {
         return map;
     }
 
+    // For testing purposes
     public static void main(String[] args) {
 
         HashMap<String, String[]> kanto = fillMap("locations.txt", "map.txt");
-        System.out.println("Finished filling map");
+
+        // Printing out map
+        for (String key : kanto.keySet()) {
+
+            System.out.print(key + ": [");
+
+            for (String loc : kanto.get(key)) {
+
+                System.out.print(loc + ", ");
+            }
+
+            System.out.println("]");
+        }
     }
 }
