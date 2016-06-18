@@ -1,4 +1,7 @@
-// Not sure if it's better to use hashmap or hashtable for efficiency
+/*
+ * This theoretically should create the map/environment of the Pokemon game.
+ * Setting based off of California.
+ */
 
 import java.util.*;
 import java.io.*;
