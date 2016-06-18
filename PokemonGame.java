@@ -97,7 +97,7 @@ public class PokemonGame extends JFrame {
 
             // TODO eventually move this into some sort of map class
             try {
-                mapImage = ImageIO.read(new File("pics\\pallet_town.png"));
+                mapImage = ImageIO.read(new File("pics" + File.separator + "pallet_town.png"));
             }
             catch (IOException e) {}
         }
