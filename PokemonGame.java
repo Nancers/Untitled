@@ -1,17 +1,9 @@
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+import javax.swing.*;
 
 /**
  * Insert file/class javadoc here
@@ -62,24 +54,25 @@ public class PokemonGame extends JFrame {
 
     //------------------------------Start Screen--------------------------------
     public class StartScreen extends JPanel {
-        private ImageIcon image;
-        private JButton startButton;
-        
+        JLabel dummy = new JLabel("Press enter!");
+
         public StartScreen() {
-            image = new ImageIcon(this.getClass().getResource("start.png"));
-            
-            startButton = new JButton(image);
-            startButton.setBorder(null);
-            add(startButton);
-            
-            startButton.addActionListener(new ButtonActionListener());
+            add(dummy);
+
+            this.setFocusable(true);
+            addKeyListener(new StartKeyListener());
         }
         
-        public class ButtonActionListener implements ActionListener {
-            public void actionPerformed(ActionEvent e) {
-                // The main game panel loads when the start command is given
-                loadGame();
+        public class StartKeyListener implements KeyListener {
+            public void keyPressed(KeyEvent e) {
+                int kc = e.getKeyCode();
+                // Load the game when enter is pressed
+                if (kc == KeyEvent.VK_ENTER)
+                    loadGame();
             }
+
+            public void keyReleased(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {}
         }
     } // end class StartScreen
 
@@ -89,16 +82,24 @@ public class PokemonGame extends JFrame {
         // TODO Possibly keep this as a focus disabler / game pauser?
         // Unless there's a better way...
         private boolean enabled;
+        // TODO eventually move this into some sort of map class
+        BufferedImage mapImage = null;
         
         public GamePanel() {
             // Do game initializations here
             
             this.setFocusable(true);
-            addKeyListener(new MyKeyListener());
+            addKeyListener(new GameKeyListener());
             
             // Fires to render every 10 ms
             Timer t = new Timer(10, new TimerListener());
             t.start();
+
+            // TODO eventually move this into some sort of map class
+            try {
+                mapImage = ImageIO.read(new File("pics\\pallet_town.png"));
+            }
+            catch (IOException e) {}
         }
         
         protected void paintComponent(Graphics g) {
@@ -110,11 +111,12 @@ public class PokemonGame extends JFrame {
                     RenderingHints.VALUE_ANTIALIAS_ON);
             
             // TODO render stuff
+            g2.drawImage(mapImage, 0, 0, null);
             
             requestFocus();
         } // end method paintComponent
         
-        protected class MyKeyListener implements KeyListener {
+        protected class GameKeyListener implements KeyListener {
             public void keyPressed(KeyEvent e) {}
             
             public void keyReleased(KeyEvent e) {}
