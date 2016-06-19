@@ -11,7 +11,7 @@ public class Pokemon {
     private String   nickname;       // Nickname, if any
     private String   altername;      // Alternate name (e.g. Lizard Pokemon)
     private String[] type;           // Type(s)
-    private String   publicAbility;  // Known ability
+    private String   ability;        // Known ability
     private double   height;         // Height
     private double   weight;         // Weight
     private String   bio;            // Pokedex bio
@@ -45,11 +45,11 @@ public class Pokemon {
     private int      speed;
     private int      friendship;
     private String   gender;
-    /**** you can add all the ev/iv stuff :D
+    /* TODO: you can add all the ev/iv stuff :D
      * also not sure how exp gain is calculated */
 
     // Map of moves it can learn; hashset keeps keys in order?
-    private HashSet<Int, String> movesToLearn; // level: move
+    private TreeMap<Int, String> movesToLearn; // level: move
     private String[]             machineMoves; // moves it can learn from HM/TM
 
     // For wild Pokemon too
