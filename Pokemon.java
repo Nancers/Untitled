@@ -5,7 +5,6 @@ import java.util.*;
 import java.io.*;
 
 public class Pokemon {
-
     // Basic info for the Pokedex
     private int      number;         // # on the regional Pokedex
     private String   name;           // Official name
@@ -16,7 +15,7 @@ public class Pokemon {
     private double   height;         // Height
     private double   weight;         // Weight
     private String   bio;            // Pokedex bio
-    private String   artFile;        // the Pokemon art to display
+    private String   artFile;        // The drawing to display
 
     // Other stuff needed for battles/Pokedex
     private int      maxHP;          // Max health 
@@ -54,10 +53,10 @@ public class Pokemon {
     private String[]             machineMoves; // moves it can learn from HM/TM
 
     // For wild Pokemon too
-    private double   catchRate;      // Default catch rate at full HP
+    private int      catchRate;      // Default catch rate at full HP
 
     // For unhatched Pokemon.....do we need a separate class for this?
     private boolean  isEgg;          // If Pokemon is in egg form
     private int      hatchTime;      // Steps left to hatch
-    private String   eggGroup;       // not sure what this is used for...
+    private String[] eggGroup;       // not sure what this is used for...
 }
