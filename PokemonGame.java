@@ -83,11 +83,12 @@ public class PokemonGame extends JFrame {
         // Unless there's a better way...
         private boolean enabled;
         // TODO eventually move this into some sort of map class
-        BufferedImage mapImage = null;
+        BufferedImage mapImage;
+        Player player;
         
+        // Do game initializations here
         public GamePanel() {
-            // Do game initializations here
-            
+            enabled = true;
             this.setFocusable(true);
             addKeyListener(new GameKeyListener());
             
@@ -100,6 +101,8 @@ public class PokemonGame extends JFrame {
                 mapImage = ImageIO.read(new File("pics" + File.separator + "pallet_town.png"));
             }
             catch (IOException e) {}
+
+            player = new Player(50, 50);
         }
         
         protected void paintComponent(Graphics g) {
@@ -112,12 +115,37 @@ public class PokemonGame extends JFrame {
             
             // TODO render stuff
             g2.drawImage(mapImage, 0, 0, null);
+
+            // Draw the player's sprite
+            g2.drawImage(player.getSprite(), player.getX(), player.getY(), null);
             
             requestFocus();
         } // end method paintComponent
         
         protected class GameKeyListener implements KeyListener {
-            public void keyPressed(KeyEvent e) {}
+            // TODO eventually make it so that when you hold a key the
+            // character keeps moving in that direction
+            public void keyPressed(KeyEvent e) {
+                int kc = e.getKeyCode();
+
+                switch (kc) {
+                    case KeyEvent.VK_LEFT:
+                        player.moveLeft();
+                        break;
+
+                    case KeyEvent.VK_RIGHT:
+                        player.moveRight();
+                        break;
+
+                    case KeyEvent.VK_UP:
+                        player.moveUp();
+                        break;
+
+                    case KeyEvent.VK_DOWN:
+                        player.moveDown();
+                        break;
+                }
+            }
             
             public void keyReleased(KeyEvent e) {}
             
@@ -127,7 +155,7 @@ public class PokemonGame extends JFrame {
         public class TimerListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (enabled) {
-                    // Do stuff, including calling repaint() somewhere
+                    repaint();
                 }
             }
         }
