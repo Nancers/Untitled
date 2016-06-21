@@ -45,6 +45,8 @@ public class Pokemon {
     private int      speed;
     private int      friendship;
     private String   gender;
+    private String   nature;
+    private String   character;
     /* TODO: you can add all the ev/iv stuff :D
      * also not sure how exp gain is calculated */
 
