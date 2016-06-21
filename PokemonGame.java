@@ -77,7 +77,7 @@ public class PokemonGame extends JFrame {
     } // end class StartScreen
 
     
-    //---------------------------Game Screen---------------------------
+    //-------------------------------Game Screen--------------------------------
     public class GamePanel extends JPanel {
         // TODO Possibly keep this as a focus disabler / game pauser?
         // Unless there's a better way...
@@ -85,7 +85,13 @@ public class PokemonGame extends JFrame {
         // TODO eventually move this into some sort of map class
         BufferedImage mapImage;
         Player player;
+
+        // Player movement variables
+        private static final int WALK_DELAY = 30;
+        int lastKeyPressed;
+        int keyCycles;
         
+
         // Do game initializations here
         public GamePanel() {
             enabled = true;
@@ -103,6 +109,9 @@ public class PokemonGame extends JFrame {
             catch (IOException e) {}
 
             player = new Player(50, 50);
+
+            lastKeyPressed = KeyEvent.VK_UNDEFINED;
+            keyCycles = 0;
         }
         
         protected void paintComponent(Graphics g) {
@@ -113,7 +122,7 @@ public class PokemonGame extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             
-            // TODO render stuff
+            // Render stuff
             g2.drawImage(mapImage, 0, 0, null);
 
             // Draw the player's sprite
@@ -122,11 +131,42 @@ public class PokemonGame extends JFrame {
             requestFocus();
         } // end method paintComponent
         
+        private void gameScreenTick() {
+            // Operations for moving when a key is held
+            keyCycles++;
+            if ((keyCycles % WALK_DELAY) == 0) {
+                switch (lastKeyPressed) {
+                    case KeyEvent.VK_LEFT:
+                        player.moveLeft();
+                        break;
+
+                    case KeyEvent.VK_RIGHT:
+                        player.moveRight();
+                        break;
+
+                    case KeyEvent.VK_UP:
+                        player.moveUp();
+                        break;
+
+                    case KeyEvent.VK_DOWN:
+                        player.moveDown();
+                        break;
+                }
+            }
+
+            repaint();
+        }
+
+
         protected class GameKeyListener implements KeyListener {
-            // TODO eventually make it so that when you hold a key the
-            // character keeps moving in that direction
             public void keyPressed(KeyEvent e) {
                 int kc = e.getKeyCode();
+                // Handle held keys separately from the OS's implementation
+                if (kc == lastKeyPressed)
+                    return;
+
+                lastKeyPressed = kc;
+                keyCycles = 0;
 
                 switch (kc) {
                     case KeyEvent.VK_LEFT:
@@ -147,7 +187,10 @@ public class PokemonGame extends JFrame {
                 }
             }
             
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+                lastKeyPressed = KeyEvent.VK_UNDEFINED;
+                keyCycles = 0;
+            }
             
             public void keyTyped(KeyEvent e) {}
         }
@@ -155,7 +198,7 @@ public class PokemonGame extends JFrame {
         public class TimerListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (enabled) {
-                    repaint();
+                    gameScreenTick();
                 }
             }
         }
