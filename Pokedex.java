@@ -50,6 +50,39 @@ public class Pokedex {
 
     // Pokemon database constructor. Reads in csv file and builds the Pokedex
     public Pokedex() {
+        numSeen = new int[];
 
+    }
+
+    //--------------------------------------------------------------------------
+    //----------------------------Getters/Setters-------------------------------
+    //--------------------------------------------------------------------------
+
+    public String getName(int n) {
+        return name[n-1];
+    }
+
+    public int getBaseHP(int n) {
+        return baseHP[n-1];
+    }
+
+    public int getBaseAttack(int n) {
+        return baseAttack[n-1];
+    }
+
+    public int getBaseDefense(int n) {
+        return baseDefense[n-1];
+    }
+
+    public int getBaseSpAttack(int n) {
+        return baseSpAttack[n-1];
+    }
+
+    public int getBaseSpDefense(int n) {
+        return baseSpDefense[n-1];
+    }
+
+    public int getBaseSpeed(int n) {
+        return baseSpeed[n-1];
     }
 }
