@@ -1,7 +1,7 @@
 /* Pokemon database. Keeps a data of all the Pokemon that exist in the game.
  * Also keeps track of whether the Pokemon has been seen and captured.
  * All the information is stored in arrays; we access the correct information
- * via the # of the Pokemon.
+ * via the ID of the Pokemon.
  */
 
 import java.util.*;
@@ -25,6 +25,7 @@ public class Pokedex {
     private int[]                    baseSpAttack;  // base special attack
     private int[]                    baseSpDefense; // base special defense
     private int[]                    baseSpeed;     // base speed
+    private LevelRate[]              lvlRate;       // level rate
     
     private TreeMap<Integer, Move>[] movesToLearn;  // Level: move to learn
     private Move[][]                 machineMoves;  // Moves to learn from HM/TM
@@ -50,7 +51,7 @@ public class Pokedex {
 
     // Pokemon database constructor. Reads in csv file and builds the Pokedex
     public Pokedex() {
-        numSeen = new int[];
+        numSeen = new int[150];
 
     }
 
@@ -84,5 +85,9 @@ public class Pokedex {
 
     public int getBaseSpeed(int n) {
         return baseSpeed[n-1];
+    }
+
+    public LevelRate getLvlRate(int n) {
+        return lvlRate[n-1];
     }
 }
