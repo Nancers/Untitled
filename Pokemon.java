@@ -21,7 +21,7 @@ public class Pokemon {
     private int      maxHP;          // Max health 
     private int      curHP;          // Current health
     private String[] stats;          // Stats inflicted (can you have multiple?)
-    private String[] moves;          //***** Make a class for moves
+    private Move[]   moves;          //***** Make a class for moves
     private String   hiddenAbility;  // Hidden ability
     private String   heldItem;       // Need a parent/abstract class of items?
     private int      curLvl;         // Current level
