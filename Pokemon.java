@@ -57,12 +57,12 @@ public class Pokemon {
         curExp      = 0;
         totalExp    = calcExp(p.getLvlRate(id), curLvl);
         nature      = new Nature();
-        attack      = calcStat(p.getBaseAttack(id), nature.getAttackMod());
-        defense     = calcStat(p.getBaseDefense(id), nature.getDefenseMod());
-        spAttack    = calcStat(p.getBaseSpAttack(id), nature.getSpAttackMod());
-        spDefense   = calcStat(p.getBaseSpDefense(id), nature.getSpDefenseMod());
-        speed       = calcStat(p.getBaseSpeed(id), nature.getSpeedMod());
-        friendship  = 70;
+        attack      = calcStat(p.getBaseAttack(id),    nature.attackMod);
+        defense     = calcStat(p.getBaseDefense(id),   nature.defenseMod);
+        spAttack    = calcStat(p.getBaseSpAttack(id),  nature.spAttackMod);
+        spDefense   = calcStat(p.getBaseSpDefense(id), nature.spDefenseMod);
+        speed       = calcStat(p.getBaseSpeed(id),     nature.speedMod);
+        friendship  = BASE_FRIENDSHIP;
         gender      = "Male";
         character   = "Something";
         isEgg       = false;
@@ -119,6 +119,9 @@ public class Pokemon {
         return (int) ((base * 2.0 + iv + (ev/4.0)) * curLvl/100.0 + 10 + curLvl);
     }
 
+    // Explanations on exp gain: 
+    // http://bulbapedia.bulbagarden.net/wiki/Experience
+    
     // Returns total experience needed for next level based on Pokemon's growth
     // Input: rate - rate of growth
     //        n    - current level
@@ -194,6 +197,23 @@ public class Pokemon {
         }
     }
 
-    // Explanations on exp gain: 
-    // http://bulbapedia.bulbagarden.net/wiki/Experience
+    //--------------------------------------------------------------------------
+    //-----------------------------Inner Classes--------------------------------
+    //--------------------------------------------------------------------------
+
+    class Nature {
+
+        private String name;
+        private double attackMod;
+        private double defenseMod;
+        private double spAttackMod;
+        private double spDefenseMod;
+        private double speedMod;
+
+        // Read CSV file of all the natures and corresponding mods for stats
+        // Nature is then chosen at random
+        public Nature() {
+
+        }
+    }
 }
