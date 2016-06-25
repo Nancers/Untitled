@@ -7,34 +7,39 @@ import java.util.*;
 public class Nature {
 
     private String name;
-    private double attackMod;
-    private double defenseMod;
-    private double spAttackMod;
-    private double spDefenseMod;
-    private double speedMod;
+    private double atkM;   // Atk mod value
+    private double defM;   // Defense mod value
+    private double sAtkM; // Special attack mod value
+    private double sDefM; // Special defense mod value
+    private double speedM; // Speed mod value
 
-    // Read CSV file of all the natures and corresponding mods for stats
-    public Nature() {
+    public Nature(String n, double a, double d, double sa, double sd, double s) {
 
+        name   = n;
+        atkM   = a;
+        defM   = d;
+        sAtkM  = sa;
+        sDefM  = sd;
+        speedM = s;
     }
 
-    public double getAttackMod() {
-        return attackMod;
+    public double getAtkM() {
+        return atkM;
     }
 
-    public double getDefenseMod() {
-        return defenseMod;
+    public double getDefM() {
+        return defM;
     }
 
-    public double getSpAttackMod() {
-        return spAttackMod;
+    public double getSAtkM() {
+        return sAtkM;
     }
 
-    public double getSpDefenseMod() {
-        return spDefenseMod;
+    public double getSDefM() {
+        return sDefM;
     }
 
-    public double getSpeedMod() {
-        return speedMod;
+    public double getSpeedM() {
+        return speedM;
     }
 }
