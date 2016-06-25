@@ -11,6 +11,7 @@ public class Pokemon {
     public static final int MAX_EV          = 251; // Max EV value for any stat
     public static final int BASE_FRIENDSHIP = 70;  // Default friendship
     public static final int MAX_FRIENDSHIP  = 255; // Max friendship
+    public static final int NUM_NATURE      = 25;  // number of possible natures
 
     private int      id;         // ID # on the regional Pokedex; starts at 1
     private String   nickname;   // Name given by trainer, if any
@@ -32,8 +33,8 @@ public class Pokemon {
     private String   gender;     // Male or female
     private Nature   nature;     // Used to calculate stat growth
     private String   character;  // Used to calculate stat growth
-    private int      iv;         // Undividual value
-    private int      ev;         // Effort value
+    private int      iv;         // Individual value
+    private Effort   ev;         // Effort values
 
     private boolean  isEgg;      // If Pokemon is in egg form
     private int      hatchTime;  // Steps left to hatch
@@ -43,25 +44,25 @@ public class Pokemon {
     //--------------------------------------------------------------------------
 
     // Constructs a wild Pokemon
-    public Pokemon(int n, int minLvl, int maxLvl, Pokedex p) {
-        id          = n;
-        nickname    = p.getName(n);
+    public Pokemon(int i, int minLvl, int maxLvl, Pokedex p, Naturedex n) {
+        id          = i;
+        nickname    = p.getName(id);
         iv          = randNum(0, MAX_IV);
-        ev          = 0;
+        ev          = new Effort();
         curLvl      = randNum(minLvl, maxLvl);
-        maxHP       = calcHP(p.getBaseHP(id));
+        maxHP       = calcHP(p.getBaseHP(id), ev.hpEV);
         curHP       = maxHP;
         stats       = new String[3];
         moves       = new Move[4];  // need a function to generate this
         heldItem    = "None";
         curExp      = 0;
         totalExp    = calcExp(p.getLvlRate(id), curLvl);
-        nature      = new Nature();
-        attack      = calcStat(p.getBaseAttack(id),    nature.attackMod);
-        defense     = calcStat(p.getBaseDefense(id),   nature.defenseMod);
-        spAttack    = calcStat(p.getBaseSpAttack(id),  nature.spAttackMod);
-        spDefense   = calcStat(p.getBaseSpDefense(id), nature.spDefenseMod);
-        speed       = calcStat(p.getBaseSpeed(id),     nature.speedMod);
+        nature      = n.getRandNature();
+        attack      = calcStat(p.getBaseAttack(id), nature.getAtkM(), ev.atkEV);
+        defense     = calcStat(p.getBaseDefense(id), nature.getDefM(), ev.defEV);
+        spAttack    = calcStat(p.getBaseSpAttack(id), nature.getSAtkM(), ev.spAtkEV);
+        spDefense   = calcStat(p.getBaseSpDefense(id), nature.getSDefM(), ev.spDefEV);
+        speed       = calcStat(p.getBaseSpeed(id), nature.getSpeedM(), ev.speedEV);
         friendship  = BASE_FRIENDSHIP;
         gender      = "Male";
         character   = "Something";
@@ -79,7 +80,7 @@ public class Pokemon {
         id = num;
         nickname = "Egg";
         curLvl = 1;
-        maxHP = calcHP(p.getBaseHP(id));
+        //maxHP = calcHP(p.getBaseHP(id));
 
         isEgg = true;
         //hatchTime = genRandNum();
@@ -90,11 +91,32 @@ public class Pokemon {
     //----------------------------Getters/Setters-------------------------------
     //--------------------------------------------------------------------------
 
-    // Renames a Pokemon
-    // Input:   n - new name
-    // Returns nothing
     public void setName(String n) {
         nickname = n;
+    }
+
+    public void setHP(int n) {
+        maxHP = n;
+    }
+
+    public void setAttack(int n) {
+        attack = n;
+    }
+
+    public void setDefense(int n) {
+        defense = n;
+    }
+
+    public void setSpAttack(int n) {
+        spAttack = n;
+    }
+
+    public void setSpDefense(int n) {
+        spDefense = n;
+    }
+
+    public void setSpeed(int n) {
+        speed = n;
     }
 
     //--------------------------------------------------------------------------
@@ -109,19 +131,19 @@ public class Pokemon {
 
     // Returns rounded down stat calculation based on base stat
     // Input:   base - base stat
-    private int calcStat(int base, double nMod) {
-        return (int) ((base * 2.0 + iv + (ev/4.0)) * curLvl/100.0 + 5 * nMod); 
+    private int calcStat(int base, double nMod, int e) {
+        return (int) ((base * 2 + iv + (e / 4.0)) * curLvl/100.0 + 5 * nMod); 
     }
 
     // Returns rounded down HP calculation based on base HP
     // Input:   base - base HP
-    private int calcHP(int base) {
-        return (int) ((base * 2.0 + iv + (ev/4.0)) * curLvl/100.0 + 10 + curLvl);
+    private int calcHP(int base, int e) {
+        return (int) ((base * 2 + iv + (e/4.0)) * curLvl/100.0 + 10 + curLvl);
     }
 
     // Explanations on exp gain: 
     // http://bulbapedia.bulbagarden.net/wiki/Experience
-    
+
     // Returns total experience needed for next level based on Pokemon's growth
     // Input: rate - rate of growth
     //        n    - current level
@@ -201,19 +223,22 @@ public class Pokemon {
     //-----------------------------Inner Classes--------------------------------
     //--------------------------------------------------------------------------
 
-    class Nature {
+    class Effort {
 
-        private String name;
-        private double attackMod;
-        private double defenseMod;
-        private double spAttackMod;
-        private double spDefenseMod;
-        private double speedMod;
+        private int hpEV;
+        private int atkEV;
+        private int defEV;
+        private int spAtkEV;
+        private int spDefEV;
+        private int speedEV;
 
-        // Read CSV file of all the natures and corresponding mods for stats
-        // Nature is then chosen at random
-        public Nature() {
-
+        public Effort() {
+            hpEV    = 0;
+            atkEV   = 0;
+            defEV   = 0;
+            spAtkEV = 0;
+            spDefEV = 0;
+            speedEV = 0;
         }
     }
 }
