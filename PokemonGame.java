@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
@@ -123,7 +124,9 @@ public class PokemonGame extends JFrame {
                     RenderingHints.VALUE_ANTIALIAS_ON);
             
             // Render stuff
-            g2.drawImage(mapImage, 0, 0, null);
+            AffineTransform mapScale = new AffineTransform();
+            mapScale.scale(1.5, 1.5);
+            g2.drawImage(mapImage, new AffineTransformOp(mapScale, AffineTransformOp.TYPE_BILINEAR), 0, 0);
 
             // Draw the player's sprite
             g2.drawImage(player.getSprite(), player.getX(), player.getY(), null);
@@ -199,6 +202,63 @@ public class PokemonGame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (enabled) {
                     gameScreenTick();
+                }
+            }
+        }
+    } // end class GamePanel
+
+
+    //-------------------------------Game Screen--------------------------------
+    public class BattlePanel extends JPanel {
+        // TODO Possibly keep this as a focus disabler / game pauser?
+        // Unless there's a better way...
+        private boolean enabled;
+        
+        public BattlePanel() {
+            enabled = true;
+            this.setFocusable(true);
+            addKeyListener(new BattleKeyListener());
+            
+            // Fires to render every 10 ms
+            Timer t = new Timer(10, new TimerListener());
+            t.start();
+        }
+        
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            // For more advanced 2D graphics
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            
+            // Render stuff
+            
+            requestFocus();
+        } // end method paintComponent
+        
+        private void battleScreenTick() {
+            repaint();
+        }
+
+
+        protected class BattleKeyListener implements KeyListener {
+            public void keyPressed(KeyEvent e) {
+                int kc = e.getKeyCode();
+
+                switch (kc) {
+                }
+            }
+            
+            public void keyReleased(KeyEvent e) {}
+            
+            public void keyTyped(KeyEvent e) {}
+        }
+        
+        public class TimerListener implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                if (enabled) {
+                    battleScreenTick();
                 }
             }
         }
