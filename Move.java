@@ -7,9 +7,9 @@ import java.io.*;
 public class Move {
     // Basic info for the Pokedex
     private String   name;           // Move name
-    private String   type;           // Type
+    private Type     type;           // Type
     private String   category;       // Physical, special or status
-    private String   curPP;          // current amount of PP left
+    // private String   curPP;          // current amount of PP left
     private int      maxPP;          // max amount of PP
     private int      power;          // power, if any
     private int      accuracy;       // % accuracy, if any

@@ -13,8 +13,8 @@ public class Pokedex {
     private String[]                 ability1;      // 1st known ability
     private String[]                 ability2;      // 2nd known ability, if any
     private String[]                 hiddenAbility; // Hidden ability
-    private String[]                 type1;         // 1st type
-    private String[]                 type2;         // 2nd type, if any
+    private Type[]                   type1;         // 1st type
+    private Type[]                   type2;         // 2nd type, if any
     private int[]                    height;        // Height (inches)
     private double[]                 weight;        // Weight (pounds)
     private String[]                 bio;           // Pokedex biography
