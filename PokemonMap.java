@@ -1,6 +1,4 @@
-/*
- * This theoretically should create the map/environment of the Pokemon game.
- * Setting based off of California.
+/* An instance of this represents the current area the player is at.
  */
 
 import java.util.*;
@@ -8,80 +6,27 @@ import java.io.*;
 
 public class PokemonMap {
 
-    public static HashMap<String, String[]> fillMap(String locF, String mapF) {
-        //Part 1: Populate array of locations
-        ArrayList<String> locations   = new ArrayList<String>();
-        HashMap<String, String[]> map = new HashMap<String, String[]>();
+    private String worldURL;
+    private BufferedImage worldImage;
+    private int width;
+    private int height;
+    private int[][] areaMatrix;
 
-        // Read through locations.txt to make an array of locations
+    // Do we write the matrix beforehand?? Do we just the current area and
+    // matrix together idk
+    public PokemonMap(String url, int w, int h) {
+
+        worldURL = url;
+
+        // Create buffered image of current area
         try {
-            FileReader file       = new FileReader(locF);
-            BufferedReader buffer = new BufferedReader(file);
-            String nextLine       = buffer.readLine();
-
-            while (nextLine != null) {
-                // Skip empty lines
-                if (nextLine.length() > 0) {
-                    locations.add(nextLine);
-                }
-
-                nextLine = buffer.readLine();
-            }
-
-            buffer.close();
+            mapImage = ImageIO.read(new File("pics" + File.separator + "pallet_town.png"));
         }
-        catch(FileNotFoundException e) {
-            System.out.println(locF + " not found in directory. \n");
-        }
-        catch(IOException e) {
-            System.out.println("Error reading " + locF + "\n");
-        }
+        catch (IOException e) {}
 
-        // Create mapping relationship of locations from map.txt
-        try {
-            FileReader file       = new FileReader(mapF);
-            BufferedReader buffer = new BufferedReader(file);
-            String nextLine       = buffer.readLine();
-            StringBuffer locs     = new StringBuffer();
+        width = w;
+        height = h;
 
-            while (nextLine != null) {
-                String[] indices = nextLine.split(" ");
-                String key       = locations.get(Integer.parseInt(indices[0]));
-                String[] vals    = new String[indices.length-1];
-
-                for (int i=1; i<indices.length; i++) {
-                    vals[i-1] = locations.get(Integer.parseInt(indices[i]));
-                }
-
-                map.put(key, vals);
-                nextLine = buffer.readLine();
-            }
-
-            buffer.close();
-        }
-        catch(FileNotFoundException e) {
-            System.out.println(mapF + " not found in directory. \n");
-        }
-        catch(IOException e) {
-            System.out.println("Error reading " + mapF + "\n");
-        }
-
-        return map;
-    }
-
-    // For testing purposes
-    public static void main(String[] args) {
-        HashMap<String, String[]> kanto = fillMap("locations.txt", "map.txt");
-
-        // Printing out map
-        for (String key : kanto.keySet()) {
-            System.out.print(key + ": [");
-
-            for (String loc : kanto.get(key)) {
-                System.out.print(loc + ", ");
-            }
-
-            System.out.println("]");
-        }
+        areaMatrix = new int[w][h];
     }
 }
