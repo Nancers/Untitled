@@ -10,39 +10,45 @@ import javax.swing.*;
  * Insert file/class javadoc here
  */
 public class PokemonGame extends JFrame {
-    public static final int WIDTH = 700;
-    public static final int HEIGHT = 700;
+    public static final int FRAME_WIDTH = 700;
+    public static final int FRAME_HEIGHT = 700;
+    public static final int PANEL_WIDTH = 700;
+    public static final int PANEL_HEIGHT = 325;
+    public static final int H_GAP = 50;
     
     // Declaration of primary panels
     // There may only be one primary panel active at a time. Subpanels, such as
     // menus within the game, are subpanels within the primary panel
     // Battles will probably have their own panel
-    private StartScreen startScreen;
+    private StartPanel startScreen;
     private GamePanel gameScreen;
+    private MenuPanel menuScreen;
     
     public static void main(String[] args) {
         PokemonGame game = new PokemonGame();
         
-        game.setSize(WIDTH, HEIGHT);
+        game.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         game.setLocationRelativeTo(null);
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setVisible(true);
     }
     
     public PokemonGame() {
-        setLayout(new GridLayout(2, 1));
+        setLayout(new GridLayout(2, 1, 0, 50));
         setTitle("Pokemon");
         // Initialize start screen
-        startScreen = new StartScreen();
+        startScreen = new StartPanel();
         add(startScreen);
     }
     
     //---------------------------Transition functions---------------------------
     public void loadGame() {
         gameScreen = new GamePanel();
+        menuScreen = new MenuPanel();
         
         remove(startScreen);
         add(gameScreen);
+        add(menuScreen);
         gameScreen.requestFocusInWindow();
         invalidate();
         validate();
@@ -55,10 +61,10 @@ public class PokemonGame extends JFrame {
     // get bit enough. Not sure on the pros and cons of inner classes
 
     //------------------------------Start Screen--------------------------------
-    public class StartScreen extends JPanel {
+    public class StartPanel extends JPanel {
         JLabel dummy = new JLabel("Press enter!");
 
-        public StartScreen() {
+        public StartPanel() {
             add(dummy);
 
             this.setFocusable(true);
@@ -126,7 +132,7 @@ public class PokemonGame extends JFrame {
             
             // Render stuff
             AffineTransform mapScale = new AffineTransform();
-            mapScale.scale(1.5, 1.5);
+            mapScale.scale(2, 1.5);
             g2.drawImage(mapImage, new AffineTransformOp(mapScale, AffineTransformOp.TYPE_BILINEAR), 0, 0);
 
             // Draw the player's sprite
@@ -208,8 +214,57 @@ public class PokemonGame extends JFrame {
         }
     } // end class GamePanel
 
+    //-------------------------------Menu Screen-------------------------------
+    public class MenuPanel extends JPanel {
+        // TODO Possibly keep this as a focus disabler / game pauser?
+        // Unless there's a better way...
+        private boolean enabled;
+        // TODO need to add a cursor or selection of some sort
+        BufferedImage menuImage;
 
-    //-------------------------------Game Screen--------------------------------
+        // Do menu initializations here
+        public MenuPanel() {
+            enabled = true;
+            this.setFocusable(true);
+            //addKeyListener(new GameKeyListener());
+            
+            // Fires to render every 10 ms
+            //Timer t = new Timer(10, new TimerListener());
+            //t.start();
+
+            // TODO eventually move this into some sort of map class
+            try {
+                menuImage = ImageIO.read(new File("pics" + File.separator + "menu.jpg"));
+            }
+            catch (IOException e) {}
+
+            //player = new Player(50, 50);
+
+            //lastKeyPressed = KeyEvent.VK_UNDEFINED;
+            //keyCycles = 0;
+        }
+        
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            // For more advanced 2D graphics
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            
+            // Render stuff
+            AffineTransform menuScale = new AffineTransform();
+            menuScale.scale(2.2, 1.5);
+            g2.drawImage(menuImage, new AffineTransformOp(menuScale, AffineTransformOp.TYPE_BILINEAR), 0, 0);
+
+            // Draw the player's sprite
+            //g2.drawImage(player.getSprite(), player.getX(), player.getY(), null);
+            
+            //requestFocus();
+        } // end method paintComponent
+    }
+
+    //-------------------------------Battle Screen--------------------------------
     public class BattlePanel extends JPanel {
         // TODO Possibly keep this as a focus disabler / game pauser?
         // Unless there's a better way...

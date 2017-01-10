@@ -6,9 +6,6 @@ import java.io.*;
 import java.lang.*;
 
 public class PokemonMap {
-    public static final int MAP_WIDTH          = 700;  // Width of map screen
-    public static final int MAP_HEIGHT         = 350;  // Height of map screen
-
     private String worldURL;               // loc of the picture to render
     private BufferedImage worldImage;      // the entire area image
     private BufferedImage currentImage;    // current image rendered depending on where the player is
@@ -37,7 +34,7 @@ public class PokemonMap {
 
         mapMatrix = m;
 
-        /* TODO: set currentImage given player coordinates */
+        /* TODO: set currentImage given player coordinates *
         updateMapImage(x, y);
     }
 
