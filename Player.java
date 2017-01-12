@@ -7,6 +7,8 @@ import java.io.*;
 import javax.imageio.*;
 
 public class Player {
+	public static final int PLAYER_WIDTH = 50;
+	public static final int PLAYER_HEIGHT = 50;
 	public static final int STEP_SIZE = 50;
 
 	private String name;
@@ -27,13 +29,12 @@ public class Player {
         catch (IOException e) {}
 	}
 
-
 	// Getters
 	public BufferedImage getSprite() {
 		return sprite;
 	}
 
-	public int getX() {
+	public int getX() { 
 		return posX;
 	}
 
@@ -47,7 +48,7 @@ public class Player {
 	}
 
 	public void moveRight() {
-		posX = (posX <= PokemonGame.WIDTH - STEP_SIZE) ? posX + STEP_SIZE : posX;
+		posX = (posX <= PokemonGame.PANEL_WIDTH - 2 * STEP_SIZE) ? posX + STEP_SIZE : posX;
 	}
 
 	public void moveUp() {
@@ -55,6 +56,6 @@ public class Player {
 	}
 
 	public void moveDown() {
-		posY = (posY <= PokemonGame.HEIGHT - STEP_SIZE) ? posY + STEP_SIZE : posY;
+		posY = (posY <= PokemonGame.PANEL_HEIGHT - 2 * STEP_SIZE) ? posY + STEP_SIZE : posY;
 	}
 }

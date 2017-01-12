@@ -34,7 +34,7 @@ public class PokemonGame extends JFrame {
     }
     
     public PokemonGame() {
-        setLayout(new GridLayout(2, 1, 0, 50));
+        setLayout(new GridLayout(2, 1, 0, H_GAP));
         setTitle("Pokemon");
         // Initialize start screen
         startScreen = new StartPanel();
