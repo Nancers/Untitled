@@ -57,7 +57,7 @@ public class PokemonMap {
     /* This function determines if the map or player should be moved in the x
      * direction.
      */
-    public boolean moveMapX() {
+    public boolean moveMapX(int x_player) {
         if (curX != 0 && curX + PokemonGame.PANEL_WIDTH < widthMap) {
             curX = x_player - PokemonGame.PANEL_WIDTH / 2;
 
@@ -70,7 +70,7 @@ public class PokemonMap {
     /* This function determines if the map or player should be moved in the y
      * direction.
      */
-    public boolean moveMapY() {
+    public boolean moveMapY(int y_player) {
         if (curY != 0 && curY + PokemonGame.PANEL_HEIGHT < heightMap) {
             curY = y_player - PokemonGame.PANEL_HEIGHT / 2;
 
