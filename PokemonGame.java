@@ -13,8 +13,12 @@ public class PokemonGame extends JFrame {
     public static final int FRAME_WIDTH = 700;
     public static final int FRAME_HEIGHT = 700;
     public static final int PANEL_WIDTH = 700;
-    public static final int PANEL_HEIGHT = 325;
-    public static final int H_GAP = 50;
+    public static final int PANEL_HEIGHT = 350;
+    public static final int H_GAP = 0;
+    public static final int START_X = 0;
+    public static final int START_Y = 0;
+    public static final int MIDDLE_X = 325;
+    public static final int MIDDLE_Y = 150;
     
     // Declaration of primary panels
     // There may only be one primary panel active at a time. Subpanels, such as
@@ -90,8 +94,10 @@ public class PokemonGame extends JFrame {
         // TODO Possibly keep this as a focus disabler / game pauser?
         // Unless there's a better way...
         private boolean enabled;
-        // TODO eventually move this into some sort of map class
-        BufferedImage mapImage;
+        // Load current map
+        private PokemonMap curMap = new PokemonMap("temp_ahri2.jpg", 2000, 2000, START_X, START_Y);
+        // Take subimage
+        BufferedImage mapImage = curMap.getCurImage();
         Player player;
 
         // Player movement variables
@@ -110,13 +116,7 @@ public class PokemonGame extends JFrame {
             Timer t = new Timer(10, new TimerListener());
             t.start();
 
-            // TODO eventually move this into some sort of map class
-            try {
-                mapImage = ImageIO.read(new File("pics" + File.separator + "pallet_town.png"));
-            }
-            catch (IOException e) {}
-
-            player = new Player(50, 50);
+            player = new Player(START_X, START_Y);
 
             lastKeyPressed = KeyEvent.VK_UNDEFINED;
             keyCycles = 0;
@@ -132,7 +132,6 @@ public class PokemonGame extends JFrame {
             
             // Render stuff
             AffineTransform mapScale = new AffineTransform();
-            mapScale.scale(2, 1.5);
             g2.drawImage(mapImage, new AffineTransformOp(mapScale, AffineTransformOp.TYPE_BILINEAR), 0, 0);
 
             // Draw the player's sprite
@@ -147,19 +146,47 @@ public class PokemonGame extends JFrame {
             if ((keyCycles % WALK_DELAY) == 0) {
                 switch (lastKeyPressed) {
                     case KeyEvent.VK_LEFT:
-                        player.moveLeft();
+                        if(curMap.moveMapX(player.getX(), -1)) {
+                            curMap.updateCurImage();
+                            mapImage = curMap.getCurImage();
+                        }
+                        else {
+                            player.moveLeft();
+                        }
+                        
                         break;
 
                     case KeyEvent.VK_RIGHT:
-                        player.moveRight();
+                        if(curMap.moveMapX(player.getX(), 1)) {
+                            curMap.updateCurImage();
+                            mapImage = curMap.getCurImage();
+                        }
+                        else {
+                            player.moveRight();
+                        }
+
                         break;
 
                     case KeyEvent.VK_UP:
-                        player.moveUp();
+                        if(curMap.moveMapY(player.getY(), -1)) {
+                            curMap.updateCurImage();
+                            mapImage = curMap.getCurImage();
+                        }
+                        else {
+                            player.moveUp();
+                        }
+
                         break;
 
                     case KeyEvent.VK_DOWN:
-                        player.moveDown();
+                        if(curMap.moveMapX(player.getY(), 1)) {
+                            curMap.updateCurImage();
+                            mapImage = curMap.getCurImage();
+                        }
+                        else {
+                            player.moveDown();
+                        }
+
                         break;
                 }
             }
@@ -180,19 +207,47 @@ public class PokemonGame extends JFrame {
 
                 switch (kc) {
                     case KeyEvent.VK_LEFT:
-                        player.moveLeft();
+                        if(curMap.moveMapX(player.getX(), -1)) {
+                            curMap.updateCurImage();
+                            mapImage = curMap.getCurImage();
+                        }
+                        else {
+                            player.moveLeft();
+                        }
+                        
                         break;
 
                     case KeyEvent.VK_RIGHT:
-                        player.moveRight();
+                        if(curMap.moveMapX(player.getX(), 1)) {
+                            curMap.updateCurImage();
+                            mapImage = curMap.getCurImage();
+                        }
+                        else {
+                            player.moveRight();
+                        }
+
                         break;
 
                     case KeyEvent.VK_UP:
-                        player.moveUp();
+                        if(curMap.moveMapY(player.getY(), -1)) {
+                            curMap.updateCurImage();
+                            mapImage = curMap.getCurImage();
+                        }
+                        else {
+                            player.moveUp();
+                        }
+
                         break;
 
                     case KeyEvent.VK_DOWN:
-                        player.moveDown();
+                        if(curMap.moveMapY(player.getY(), 1)) {
+                            curMap.updateCurImage();
+                            mapImage = curMap.getCurImage();
+                        }
+                        else {
+                            player.moveDown();
+                        }
+
                         break;
                 }
             }

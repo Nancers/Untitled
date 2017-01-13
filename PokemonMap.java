@@ -22,8 +22,8 @@ public class PokemonMap {
 
     // Do we write the matrix beforehand?? Do we just the current area and
     // matrix together idk
-    public PokemonMap(String url, int w, int h, int x_player, int y_player, int[][] m) {
-        mapURL = "pics" + File.separator + url;
+    public PokemonMap(String pic, int w, int h, int x_player, int y_player) {
+        mapURL = "pics" + File.separator + pic;
 
         // Create buffered image of current area
         try {
@@ -35,9 +35,12 @@ public class PokemonMap {
 
         widthMap = w;
         heightMap = h;
-        mapMatrix = m;
-        curX = x_player - Player.PLAYER_WIDTH / 2 - PokemonGame.PANEL_WIDTH / 2;
-        curY = y_player - Player.PLAYER_HEIGHT / 2 - PokemonGame.PANEL_HEIGHT / 2;
+        // TODO: Need to figure out how to define each tile in map
+        //mapMatrix = m;
+        // TODO: We will have to fix up where the player should show up in each
+        // map; for now it's defaulted to center
+        curX = w / 2;
+        curY = w / 2;
 
         updateCurImage();
     }
@@ -57,10 +60,37 @@ public class PokemonMap {
     /* This function determines if the map or player should be moved in the x
      * direction.
      */
-    public boolean moveMapX(int x_player) {
-        if (curX != 0 && curX + PokemonGame.PANEL_WIDTH < widthMap) {
-            curX = x_player - PokemonGame.PANEL_WIDTH / 2;
+    public boolean moveMapX(int x_player, int direction) {
+        // Edge cases:
+        // If we are at the left end of the map and player wants to move right,
+        // check if the player has reached the middle of panel; if yes, move the
+        // map; otherwise map is static as player moves right.
+        //
+        // Alternatively, if we are at the right end of the map and player wants
+        // to move left, check if the player has reached the middle of panel; if
+        // yes, move the map; otherwise map is static as player moves left.
+        if (curX == 0 && direction > 0) {
+            if (x_player >= PokemonGame.MIDDLE_X) {
+                curX = curX + direction * Player.STEP_SIZE;
+                return true;
+            }
 
+            return false;
+        }
+
+        if (curX == widthMap - PokemonGame.PANEL_WIDTH && direction < 0) {
+            if (x_player <= PokemonGame.MIDDLE_X) {
+                curX = curX + direction * Player.STEP_SIZE;
+                return true;
+            }
+
+            return false;
+        }
+
+        // Otherwise we can move the map as long as we aren't at the
+        // left/right edges.
+        if (curX != 0 && curX != widthMap - PokemonGame.PANEL_WIDTH) {
+            curX = curX + direction * Player.STEP_SIZE;
             return true;
         }
 
@@ -70,10 +100,32 @@ public class PokemonMap {
     /* This function determines if the map or player should be moved in the y
      * direction.
      */
-    public boolean moveMapY(int y_player) {
-        if (curY != 0 && curY + PokemonGame.PANEL_HEIGHT < heightMap) {
-            curY = y_player - PokemonGame.PANEL_HEIGHT / 2;
+    public boolean moveMapY(int y_player, int direction) {
+        
+        if (curY == 0 && direction > 0) {
+            if (y_player >= PokemonGame.MIDDLE_Y) {
+                curY = curY + direction * Player.STEP_SIZE;
+                return true;
+            }
 
+            return false;
+        }
+
+        System.out.println("Current y: " + curY);
+        System.out.println("Max y: " + (heightMap - PokemonGame.PANEL_HEIGHT));
+        if (curY == heightMap - PokemonGame.PANEL_HEIGHT && direction < 0) {
+            if (y_player <= PokemonGame.MIDDLE_Y) {
+                curY = curY + direction * Player.STEP_SIZE;
+                return true;
+            }
+
+            return false;
+        }
+
+        // Otherwise we can move the map as long as we aren't at the
+        // left/right edges.
+        if (curY != 0 && curY != heightMap - PokemonGame.PANEL_HEIGHT) {
+            curY = curY + direction * Player.STEP_SIZE;
             return true;
         }
 
