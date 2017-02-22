@@ -40,7 +40,7 @@ public class PokemonMap {
         // TODO: We will have to fix up where the player should show up in each
         // map; for now it's defaulted to center
         curX = w / 2;
-        curY = w / 2;
+        curY = h / 2;
 
         updateCurImage();
     }

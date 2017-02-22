@@ -15,9 +15,9 @@ public class PokemonGame extends JFrame {
     public static final int PANEL_WIDTH = 700;
     public static final int PANEL_HEIGHT = 350;
     public static final int H_GAP = 0;
-    public static final int START_X = 0;
-    public static final int START_Y = 0;
-    public static final int MIDDLE_X = 325;
+    public static final int START_X = 350;
+    public static final int START_Y = 150;
+    public static final int MIDDLE_X = 350;
     public static final int MIDDLE_Y = 150;
     
     // Declaration of primary panels
@@ -95,7 +95,7 @@ public class PokemonGame extends JFrame {
         // Unless there's a better way...
         private boolean enabled;
         // Load current map
-        private PokemonMap curMap = new PokemonMap("temp_ahri2.jpg", 2000, 2000, START_X, START_Y);
+        private PokemonMap curMap = new PokemonMap("maps" + File.separator + "temp_map2.jpg", 1700, 1700, START_X, START_Y);
         // Take subimage
         BufferedImage mapImage = curMap.getCurImage();
         Player player;
