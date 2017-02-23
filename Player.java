@@ -43,19 +43,31 @@ public class Player {
 	}
 
 	// Adjusting the position on player move
-	public void moveLeft() {
-		posX = (posX >= STEP_SIZE) ? posX - STEP_SIZE : posX;
+	public void moveLeft(PokemonMap map) {
+		if (posX >= STEP_SIZE) {
+			posX -= STEP_SIZE;
+			map.updateMX(-1);
+		}
 	}
 
-	public void moveRight() {
-		posX = (posX <= PokemonGame.PANEL_WIDTH - 2 * STEP_SIZE) ? posX + STEP_SIZE : posX;
+	public void moveRight(PokemonMap map) {
+		if (posX <= PokemonGame.PANEL_WIDTH - 2 * STEP_SIZE) {
+			posX += STEP_SIZE;
+			map.updateMX(1);
+		}
 	}
 
-	public void moveUp() {
-		posY = (posY >= STEP_SIZE) ? posY - STEP_SIZE : posY;
+	public void moveUp(PokemonMap map) {
+		if (posY >= STEP_SIZE) {
+			posY -= STEP_SIZE;
+			map.updateMY(-1);
+		}
 	}
 
-	public void moveDown() {
-		posY = (posY <= PokemonGame.PANEL_HEIGHT - 2 * STEP_SIZE) ? posY + STEP_SIZE : posY;
+	public void moveDown(PokemonMap map) {
+		if (posY <= PokemonGame.PANEL_HEIGHT - 2 * STEP_SIZE) {
+			posY += STEP_SIZE;
+			map.updateMY(1);
+		}
 	}
 }

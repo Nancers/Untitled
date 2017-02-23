@@ -14,6 +14,7 @@ public class PokemonGame extends JFrame {
     public static final int FRAME_HEIGHT = 750;
     public static final int PANEL_WIDTH = 750;
     public static final int PANEL_HEIGHT = 350;
+    public static final int TILE_SIZE = 50;
     public static final int H_GAP = 0;
     public static final int START_X = 350;
     public static final int START_Y = 150;
@@ -191,7 +192,7 @@ public class PokemonGame extends JFrame {
                             mapImage = curMap.getCurImage();
                         }
                         else {
-                            player.moveLeft();
+                            player.moveLeft(curMap);
                         }
                         
                         break;
@@ -202,7 +203,7 @@ public class PokemonGame extends JFrame {
                             mapImage = curMap.getCurImage();
                         }
                         else {
-                            player.moveRight();
+                            player.moveRight(curMap);
                         }
 
                         break;
@@ -213,7 +214,7 @@ public class PokemonGame extends JFrame {
                             mapImage = curMap.getCurImage();
                         }
                         else {
-                            player.moveUp();
+                            player.moveUp(curMap);
                         }
 
                         break;
@@ -224,7 +225,7 @@ public class PokemonGame extends JFrame {
                             mapImage = curMap.getCurImage();
                         }
                         else {
-                            player.moveDown();
+                            player.moveDown(curMap);
                         }
 
                         break;
@@ -252,7 +253,7 @@ public class PokemonGame extends JFrame {
                             mapImage = curMap.getCurImage();
                         }
                         else {
-                            player.moveLeft();
+                            player.moveLeft(curMap);
                         }
                         
                         break;
@@ -263,7 +264,7 @@ public class PokemonGame extends JFrame {
                             mapImage = curMap.getCurImage();
                         }
                         else {
-                            player.moveRight();
+                            player.moveRight(curMap);
                         }
 
                         break;
@@ -274,7 +275,7 @@ public class PokemonGame extends JFrame {
                             mapImage = curMap.getCurImage();
                         }
                         else {
-                            player.moveUp();
+                            player.moveUp(curMap);
                         }
 
                         break;
@@ -285,7 +286,7 @@ public class PokemonGame extends JFrame {
                             mapImage = curMap.getCurImage();
                         }
                         else {
-                            player.moveDown();
+                            player.moveDown(curMap);
                         }
 
                         break;

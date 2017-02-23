@@ -47,14 +47,16 @@ public class PokemonMap {
         mapMatrix = m;
         curX = w / 2 - PokemonGame.PANEL_WIDTH/2 + 25;
         curY = h / 2 - PokemonGame.PANEL_HEIGHT/2 + 25;
-        mX = x;
-        mY = y;
+        mX = (w / 2) / PokemonGame.TILE_SIZE - 1;
+        mY = (h / 2) / PokemonGame.TILE_SIZE - 1;
 
         System.out.println("0: Walkable");
         System.out.println("1: Unwalkable");
         System.out.println("2: Weed");
 
-        System.out.println("Current matrix value: " + m[mX][mY]);
+        System.out.println("mX: " + mX);
+        System.out.println("mY: " + mY);
+        System.out.println("Current matrix value: " + mapMatrix[mX][mY]);
 
         updateCurImage();
     }
@@ -65,6 +67,9 @@ public class PokemonMap {
     public void updateCurImage() {
         // http://stackoverflow.com/questions/19601116/how-to-draw-part-of-a-large-bufferedimage
         curImage = mapImage.getSubimage(curX, curY, PokemonGame.PANEL_WIDTH, PokemonGame.PANEL_HEIGHT);
+        System.out.println("mX: " + mX);
+        System.out.println("mY: " + mY);
+        System.out.println("Current matrix value: " + mapMatrix[mX][mY]);
     }
 
     public BufferedImage getCurImage() {
@@ -86,6 +91,7 @@ public class PokemonMap {
         if (curX == 0 && direction > 0) {
             if (x_player >= PokemonGame.MIDDLE_X) {
                 curX = curX + direction * Player.STEP_SIZE;
+                mX--;
                 return true;
             }
 
@@ -95,6 +101,7 @@ public class PokemonMap {
         if (curX == widthMap - PokemonGame.PANEL_WIDTH && direction < 0) {
             if (x_player <= PokemonGame.MIDDLE_X) {
                 curX = curX + direction * Player.STEP_SIZE;
+                mX++;
                 return true;
             }
 
@@ -105,6 +112,7 @@ public class PokemonMap {
         // left/right edges.
         if (curX != 0 && curX != widthMap - PokemonGame.PANEL_WIDTH) {
             curX = curX + direction * Player.STEP_SIZE;
+            mX += direction;
             return true;
         }
 
@@ -119,6 +127,7 @@ public class PokemonMap {
         if (curY == 0 && direction > 0) {
             if (y_player >= PokemonGame.MIDDLE_Y) {
                 curY = curY + direction * Player.STEP_SIZE;
+                mY--;
                 return true;
             }
 
@@ -128,6 +137,7 @@ public class PokemonMap {
         if (curY == heightMap - PokemonGame.PANEL_HEIGHT && direction < 0) {
             if (y_player <= PokemonGame.MIDDLE_Y) {
                 curY = curY + direction * Player.STEP_SIZE;
+                mY++;
                 return true;
             }
 
@@ -138,9 +148,18 @@ public class PokemonMap {
         // left/right edges.
         if (curY != 0 && curY != heightMap - PokemonGame.PANEL_HEIGHT) {
             curY = curY + direction * Player.STEP_SIZE;
+            mY += direction;
             return true;
         }
 
         return false;
+    }
+
+    public void updateMX(int direction) {
+        mX += direction;
+    }
+
+    public void updateMY(int direction) {
+        mY += direction;
     }
 }
