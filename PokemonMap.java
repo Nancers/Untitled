@@ -17,12 +17,14 @@ public class PokemonMap {
     private int heightMap;                 // height of the area
     private int curX;                      // current x-coordinate of the top left corner of the area shown
     private int curY;                      // current y-coordinate of the top left corner of the area shown
+    private int mX;                        // current x-index of matrix
+    private int mY;                        // current y-index of matrix
     private int[][] mapMatrix;             // map of integers indicating whether
                                            // player can move towards it on the
 
     // Do we write the matrix beforehand?? Do we just the current area and
     // matrix together idk
-    public PokemonMap(String pic, int w, int h, int x_player, int y_player) {
+    public PokemonMap(String pic, int w, int h, int x_player, int y_player, int x, int y, int[][] m) {
         mapURL = "pics" + File.separator + pic;
 
         // Create buffered image of current area
@@ -39,8 +41,20 @@ public class PokemonMap {
         //mapMatrix = m;
         // TODO: We will have to fix up where the player should show up in each
         // map; for now it's defaulted to center
-        curX = w / 2;
-        curY = h / 2;
+        // We need a way to keep track of the player's location every time they
+        // move to a new location (START_X and START_Y)
+
+        mapMatrix = m;
+        curX = w / 2 - PokemonGame.PANEL_WIDTH/2 + 25;
+        curY = h / 2 - PokemonGame.PANEL_HEIGHT/2 + 25;
+        mX = x;
+        mY = y;
+
+        System.out.println("0: Walkable");
+        System.out.println("1: Unwalkable");
+        System.out.println("2: Weed");
+
+        System.out.println("Current matrix value: " + m[mX][mY]);
 
         updateCurImage();
     }
@@ -111,8 +125,6 @@ public class PokemonMap {
             return false;
         }
 
-        System.out.println("Current y: " + curY);
-        System.out.println("Max y: " + (heightMap - PokemonGame.PANEL_HEIGHT));
         if (curY == heightMap - PokemonGame.PANEL_HEIGHT && direction < 0) {
             if (y_player <= PokemonGame.MIDDLE_Y) {
                 curY = curY + direction * Player.STEP_SIZE;

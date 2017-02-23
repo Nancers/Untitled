@@ -1,3 +1,5 @@
+Name x y
+temp_map2 34 34
 Pallet Town
 User's Home
 Rival's Home

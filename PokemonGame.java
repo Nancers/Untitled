@@ -10,9 +10,9 @@ import javax.swing.*;
  * Insert file/class javadoc here
  */
 public class PokemonGame extends JFrame {
-    public static final int FRAME_WIDTH = 700;
-    public static final int FRAME_HEIGHT = 700;
-    public static final int PANEL_WIDTH = 700;
+    public static final int FRAME_WIDTH = 750;
+    public static final int FRAME_HEIGHT = 750;
+    public static final int PANEL_WIDTH = 750;
     public static final int PANEL_HEIGHT = 350;
     public static final int H_GAP = 0;
     public static final int START_X = 350;
@@ -94,11 +94,9 @@ public class PokemonGame extends JFrame {
         // TODO Possibly keep this as a focus disabler / game pauser?
         // Unless there's a better way...
         private boolean enabled;
-        // Load current map
-        private PokemonMap curMap = new PokemonMap("maps" + File.separator + "temp_map2.jpg", 1700, 1700, START_X, START_Y);
-        // Take subimage
-        BufferedImage mapImage = curMap.getCurImage();
-        Player player;
+        private PokemonMap curMap;
+        private BufferedImage mapImage;
+        private Player player;
 
         // Player movement variables
         private static final int WALK_DELAY = 30;
@@ -120,6 +118,48 @@ public class PokemonGame extends JFrame {
 
             lastKeyPressed = KeyEvent.VK_UNDEFINED;
             keyCycles = 0;
+
+            // Load current map
+            // TODO: Need to write a way to read matrices. For now just reading
+            // matrix for temp_map2.jpg
+            int x = 34;
+            int y = 34;
+            int[][] m = new int[x][y];
+
+            // Read through temp_map2.txt to make an array of locations
+            try {
+                FileReader file       = new FileReader("maps" + File.separator + "temp_map2.txt");
+                BufferedReader buffer = new BufferedReader(file);
+                String nextLine       = buffer.readLine();
+                
+                int i = 0;
+                int j = 0;
+
+                while (nextLine != null) {
+                    // Skip empty lines
+                    if (nextLine.length() > 0) {
+                        String[] nums = nextLine.split(" ");
+                        m[i][j] = Integer.parseInt(nums[i]);
+                        i++;
+                    }
+
+                    i = 0;
+                    j++;
+                    nextLine = buffer.readLine();
+                }
+
+                buffer.close();
+            }
+            catch(FileNotFoundException e) {
+                System.out.println("temp not found in directory. \n");
+            }
+            catch(IOException e) {
+                System.out.println("Error reading temp\n");
+            }
+
+            curMap = new PokemonMap("maps" + File.separator + "temp_map2.jpg", 1700, 1700, START_X, START_Y, 24, 20, m);
+            // Take subimage
+            mapImage = curMap.getCurImage();
         }
         
         protected void paintComponent(Graphics g) {
@@ -179,7 +219,7 @@ public class PokemonGame extends JFrame {
                         break;
 
                     case KeyEvent.VK_DOWN:
-                        if(curMap.moveMapX(player.getY(), 1)) {
+                        if(curMap.moveMapY(player.getY(), 1)) {
                             curMap.updateCurImage();
                             mapImage = curMap.getCurImage();
                         }
