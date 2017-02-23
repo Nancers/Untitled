@@ -47,8 +47,8 @@ public class PokemonMap {
         mapMatrix = m;
         curX = w / 2 - PokemonGame.PANEL_WIDTH/2 + 25;
         curY = h / 2 - PokemonGame.PANEL_HEIGHT/2 + 25;
-        mX = (w / 2) / PokemonGame.TILE_SIZE - 1;
-        mY = (h / 2) / PokemonGame.TILE_SIZE - 1;
+        mX = (w / 2) / PokemonGame.TILE_SIZE;
+        mY = (h / 2) / PokemonGame.TILE_SIZE;
 
         System.out.println("0: Walkable");
         System.out.println("1: Unwalkable");
@@ -56,7 +56,7 @@ public class PokemonMap {
 
         System.out.println("mX: " + mX);
         System.out.println("mY: " + mY);
-        System.out.println("Current matrix value: " + mapMatrix[mX][mY]);
+        System.out.println("Current matrix value: " + mapMatrix[mY][mX]);
 
         updateCurImage();
     }
@@ -69,7 +69,7 @@ public class PokemonMap {
         curImage = mapImage.getSubimage(curX, curY, PokemonGame.PANEL_WIDTH, PokemonGame.PANEL_HEIGHT);
         System.out.println("mX: " + mX);
         System.out.println("mY: " + mY);
-        System.out.println("Current matrix value: " + mapMatrix[mX][mY]);
+        System.out.println("Current matrix value: " + mapMatrix[mY][mX]);
     }
 
     public BufferedImage getCurImage() {
@@ -91,7 +91,7 @@ public class PokemonMap {
         if (curX == 0 && direction > 0) {
             if (x_player >= PokemonGame.MIDDLE_X) {
                 curX = curX + direction * Player.STEP_SIZE;
-                mX--;
+                mX += direction;
                 return true;
             }
 
@@ -101,7 +101,7 @@ public class PokemonMap {
         if (curX == widthMap - PokemonGame.PANEL_WIDTH && direction < 0) {
             if (x_player <= PokemonGame.MIDDLE_X) {
                 curX = curX + direction * Player.STEP_SIZE;
-                mX++;
+                mX += direction;
                 return true;
             }
 
@@ -127,7 +127,7 @@ public class PokemonMap {
         if (curY == 0 && direction > 0) {
             if (y_player >= PokemonGame.MIDDLE_Y) {
                 curY = curY + direction * Player.STEP_SIZE;
-                mY--;
+                mY += direction;
                 return true;
             }
 
@@ -137,7 +137,7 @@ public class PokemonMap {
         if (curY == heightMap - PokemonGame.PANEL_HEIGHT && direction < 0) {
             if (y_player <= PokemonGame.MIDDLE_Y) {
                 curY = curY + direction * Player.STEP_SIZE;
-                mY++;
+                mY += direction;
                 return true;
             }
 
