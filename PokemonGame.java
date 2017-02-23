@@ -134,18 +134,18 @@ public class PokemonGame extends JFrame {
                 String nextLine       = buffer.readLine();
                 
                 int i = 0;
-                int j = 0;
 
                 while (nextLine != null) {
                     // Skip empty lines
                     if (nextLine.length() > 0) {
                         String[] nums = nextLine.split(" ");
-                        m[i][j] = Integer.parseInt(nums[i]);
-                        i++;
+
+                        for (int j=0; j < nums.length; j++) {
+                            m[i][j] = Integer.parseInt(nums[j]);
+                        }
                     }
 
-                    i = 0;
-                    j++;
+                    i++;
                     nextLine = buffer.readLine();
                 }
 
@@ -156,6 +156,13 @@ public class PokemonGame extends JFrame {
             }
             catch(IOException e) {
                 System.out.println("Error reading temp\n");
+            }
+
+            for (int i = 0; i < 34; i++) {
+                for (int j = 0; j < 34; j++) {
+                    System.out.print(m[i][j]);
+                }
+                System.out.println();
             }
 
             curMap = new PokemonMap("maps" + File.separator + "temp_map2.jpg", 1700, 1700, START_X, START_Y, 24, 20, m);
