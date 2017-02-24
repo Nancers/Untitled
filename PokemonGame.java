@@ -158,14 +158,7 @@ public class PokemonGame extends JFrame {
                 System.out.println("Error reading temp\n");
             }
 
-            for (int i = 0; i < 34; i++) {
-                for (int j = 0; j < 34; j++) {
-                    System.out.print(m[i][j]);
-                }
-                System.out.println();
-            }
-
-            curMap = new PokemonMap("maps" + File.separator + "temp_map2.jpg", 1700, 1700, START_X, START_Y, 24, 20, m);
+            curMap = new PokemonMap("maps" + File.separator + "temp_map2.jpg", 1700, 1700, START_X, START_Y, m);
             // Take subimage
             mapImage = curMap.getCurImage();
         }
@@ -190,13 +183,38 @@ public class PokemonGame extends JFrame {
         
         private void gameScreenTick() {
             // Operations for moving when a key is held
+            // TODO: Need to check if the player can move onto the tile before
+            // moving, or need some sort of animation or special interaction
+            // before moving
             keyCycles++;
             if ((keyCycles % WALK_DELAY) == 0) {
                 switch (lastKeyPressed) {
                     case KeyEvent.VK_LEFT:
                         if(curMap.moveMapX(player.getX(), -1)) {
-                            curMap.updateCurImage();
-                            mapImage = curMap.getCurImage();
+                            int nextMValue = curMap.getMValue(curMap.getMY(), curMap.getMX() - 1);
+                            boolean move = true;
+                            
+                            // Switch statements mainly to check if we need to
+                            // change animations or special interaction e.g. cliffs,
+                            // entering caves, etc.
+                            switch(nextMValue) {
+                                case PokemonMap.GRASS:
+                                    break;
+
+                                case PokemonMap.WALL:
+                                    move = false;
+                                    break;
+
+                                case PokemonMap.WEED:
+                                    break;
+                            }
+
+                            if (move) {
+                                curMap.updateMX(-1);
+                                curMap.updateCurX(-1);
+                                curMap.updateCurImage();
+                                mapImage = curMap.getCurImage();
+                            }
                         }
                         else {
                             player.moveLeft(curMap);
@@ -206,8 +224,27 @@ public class PokemonGame extends JFrame {
 
                     case KeyEvent.VK_RIGHT:
                         if(curMap.moveMapX(player.getX(), 1)) {
-                            curMap.updateCurImage();
-                            mapImage = curMap.getCurImage();
+                            int nextMValue = curMap.getMValue(curMap.getMY(), curMap.getMX() + 1);
+                            boolean move = true;
+                            
+                            switch(nextMValue) {
+                                case PokemonMap.GRASS:
+                                    break;
+
+                                case PokemonMap.WALL:
+                                    move = false;
+                                    break;
+
+                                case PokemonMap.WEED:
+                                    break;
+                            }
+
+                            if (move) {
+                                curMap.updateMX(1);
+                                curMap.updateCurX(1);
+                                curMap.updateCurImage();
+                                mapImage = curMap.getCurImage();
+                            }
                         }
                         else {
                             player.moveRight(curMap);
@@ -217,8 +254,24 @@ public class PokemonGame extends JFrame {
 
                     case KeyEvent.VK_UP:
                         if(curMap.moveMapY(player.getY(), -1)) {
-                            curMap.updateCurImage();
-                            mapImage = curMap.getCurImage();
+                            int nextMValue = curMap.getMValue(curMap.getMY() - 1, curMap.getMX());
+                            boolean move = true;
+                            
+                            switch(nextMValue) {
+                                case PokemonMap.GRASS:
+                                    break;
+                                case PokemonMap.WALL:
+                                    break;
+                                case PokemonMap.WEED:
+                                    break;
+                            }
+
+                            if (move) {
+                                curMap.updateMY(-1);
+                                curMap.updateCurY(-1);
+                                curMap.updateCurImage();
+                                mapImage = curMap.getCurImage();
+                            }
                         }
                         else {
                             player.moveUp(curMap);
@@ -228,8 +281,25 @@ public class PokemonGame extends JFrame {
 
                     case KeyEvent.VK_DOWN:
                         if(curMap.moveMapY(player.getY(), 1)) {
-                            curMap.updateCurImage();
-                            mapImage = curMap.getCurImage();
+                            int nextMValue = curMap.getMValue(curMap.getMY() + 1, curMap.getMX());
+                            boolean move = true;
+                            
+                            switch(nextMValue) {
+                                case PokemonMap.GRASS:
+                                    break;
+                                case PokemonMap.WALL:
+                                    move = false;
+                                    break;
+                                case PokemonMap.WEED:
+                                    break;
+                            }
+
+                            if (move) {
+                                curMap.updateMY(1);
+                                curMap.updateCurY(1);
+                                curMap.updateCurImage();
+                                mapImage = curMap.getCurImage();
+                            }
                         }
                         else {
                             player.moveDown(curMap);
@@ -256,8 +326,26 @@ public class PokemonGame extends JFrame {
                 switch (kc) {
                     case KeyEvent.VK_LEFT:
                         if(curMap.moveMapX(player.getX(), -1)) {
-                            curMap.updateCurImage();
-                            mapImage = curMap.getCurImage();
+                            int nextMValue = curMap.getMValue(curMap.getMY(), curMap.getMX() - 1);
+                            boolean move = true;
+                            
+                            switch(nextMValue) {
+                                case PokemonMap.GRASS:
+                                    break;
+
+                                case PokemonMap.WALL:
+                                    break;
+
+                                case PokemonMap.WEED:
+                                    break;
+                            }
+
+                            if (move) {
+                                curMap.updateMX(-1);
+                                curMap.updateCurX(-1);
+                                curMap.updateCurImage();
+                                mapImage = curMap.getCurImage();
+                            }
                         }
                         else {
                             player.moveLeft(curMap);
@@ -267,8 +355,27 @@ public class PokemonGame extends JFrame {
 
                     case KeyEvent.VK_RIGHT:
                         if(curMap.moveMapX(player.getX(), 1)) {
-                            curMap.updateCurImage();
-                            mapImage = curMap.getCurImage();
+                            int nextMValue = curMap.getMValue(curMap.getMY(), curMap.getMX() + 1);
+                            boolean move = true;
+                            
+                            switch(nextMValue) {
+                                case PokemonMap.GRASS:
+                                    break;
+
+                                case PokemonMap.WALL:
+                                    move = false;
+                                    break;
+
+                                case PokemonMap.WEED:
+                                    break;
+                            }
+
+                            if (move) {
+                                curMap.updateMX(1);
+                                curMap.updateCurX(1);
+                                curMap.updateCurImage();
+                                mapImage = curMap.getCurImage();
+                            }
                         }
                         else {
                             player.moveRight(curMap);
@@ -278,8 +385,27 @@ public class PokemonGame extends JFrame {
 
                     case KeyEvent.VK_UP:
                         if(curMap.moveMapY(player.getY(), -1)) {
-                            curMap.updateCurImage();
-                            mapImage = curMap.getCurImage();
+                            int nextMValue = curMap.getMValue(curMap.getMY() - 1, curMap.getMX());
+                            boolean move = true;
+                            
+                            switch(nextMValue) {
+                                case PokemonMap.GRASS:
+                                    break;
+
+                                case PokemonMap.WALL:
+                                    move = false;
+                                    break;
+
+                                case PokemonMap.WEED:
+                                    break;
+                            }
+
+                            if (move) {
+                                curMap.updateMY(-1);
+                                curMap.updateCurY(-1);
+                                curMap.updateCurImage();
+                                mapImage = curMap.getCurImage();
+                            }
                         }
                         else {
                             player.moveUp(curMap);
@@ -289,8 +415,27 @@ public class PokemonGame extends JFrame {
 
                     case KeyEvent.VK_DOWN:
                         if(curMap.moveMapY(player.getY(), 1)) {
-                            curMap.updateCurImage();
-                            mapImage = curMap.getCurImage();
+                            int nextMValue = curMap.getMValue(curMap.getMY() + 1, curMap.getMX());
+                            boolean move = true;
+                            
+                            switch(nextMValue) {
+                                case PokemonMap.GRASS:
+                                    break;
+
+                                case PokemonMap.WALL:
+                                    move = false;
+                                    break;
+
+                                case PokemonMap.WEED:
+                                    break;
+                            }
+
+                            if (move) {
+                                curMap.updateMY(1);
+                                curMap.updateCurY(1);
+                                curMap.updateCurImage();
+                                mapImage = curMap.getCurImage();
+                            }
                         }
                         else {
                             player.moveDown(curMap);

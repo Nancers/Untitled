@@ -45,29 +45,118 @@ public class Player {
 	// Adjusting the position on player move
 	public void moveLeft(PokemonMap map) {
 		if (posX >= STEP_SIZE) {
-			posX -= STEP_SIZE;
-			map.updateMX(-1);
+			int nextMValue = map.getMValue(map.getMY(), map.getMX() - 1);
+			boolean move = true;
+                            
+            switch(nextMValue) {
+                case PokemonMap.GRASS:
+                    break;
+
+                case PokemonMap.WALL:
+                	move = false;
+                	break;
+
+                case PokemonMap.WEED:
+                	break;
+            }
+
+            if (move) {
+            	posX -= STEP_SIZE;
+				map.updateMX(-1);
+			}
+
+			System.out.println("mX: " + map.getMX());
+			System.out.println("mY: " + map.getMY());
+			System.out.println("Current matrix value: " + map.curMValue());
+			System.out.println("--------");
 		}
 	}
 
 	public void moveRight(PokemonMap map) {
 		if (posX <= PokemonGame.PANEL_WIDTH - 2 * STEP_SIZE) {
-			posX += STEP_SIZE;
-			map.updateMX(1);
+
+			int nextMValue = map.getMValue(map.getMY(), map.getMX() + 1);
+			boolean move = true;
+                            
+            switch(nextMValue) {
+                case PokemonMap.GRASS:
+                    break;
+
+                case PokemonMap.WALL:
+                	move = false;
+                	break;
+
+                case PokemonMap.WEED:
+                	break;
+            }
+
+            if (move) {
+				posX += STEP_SIZE;
+				map.updateMX(1);
+			}
+
+			System.out.println("mX: " + map.getMX());
+			System.out.println("mY: " + map.getMY());
+			System.out.println("Current matrix value: " + map.curMValue());
+			System.out.println("--------");
 		}
 	}
 
 	public void moveUp(PokemonMap map) {
 		if (posY >= STEP_SIZE) {
-			posY -= STEP_SIZE;
-			map.updateMY(-1);
+			int nextMValue = map.getMValue(map.getMY() - 1, map.getMX());
+			boolean move = true;
+                            
+            switch(nextMValue) {
+                case PokemonMap.GRASS:
+                    break;
+
+                case PokemonMap.WALL:
+                	move = false;
+                	break;
+
+                case PokemonMap.WEED:
+                	break;
+            }
+
+            if (move) {
+				posY -= STEP_SIZE;
+				map.updateMY(-1);
+			}
+
+			System.out.println("mX: " + map.getMX());
+			System.out.println("mY: " + map.getMY());
+			System.out.println("Current matrix value: " + map.curMValue());
+			System.out.println("--------");
 		}
 	}
 
 	public void moveDown(PokemonMap map) {
 		if (posY <= PokemonGame.PANEL_HEIGHT - 2 * STEP_SIZE) {
-			posY += STEP_SIZE;
-			map.updateMY(1);
+			int nextMValue = map.getMValue(map.getMY() + 1, map.getMX());
+			boolean move = true;
+                            
+            switch(nextMValue) {
+                case PokemonMap.GRASS:
+                    break;
+
+                case PokemonMap.WALL:
+                	move = false;
+                	break;
+
+                case PokemonMap.WEED:
+                	break;
+            }
+
+            if (move) {
+				posY += STEP_SIZE;
+				map.updateMY(1);
+			}
+
+			System.out.println("mX: " + map.getMX());
+			System.out.println("mY: " + map.getMY());
+			System.out.println("Current matrix value: " + map.curMValue());
+			System.out.println("--------");
 		}
 	}
 }
