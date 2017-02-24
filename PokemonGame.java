@@ -5,6 +5,7 @@ import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
+import java.util.Random;
 
 /**
  * Insert file/class javadoc here
@@ -188,26 +189,17 @@ public class PokemonGame extends JFrame {
             // before moving
             keyCycles++;
             if ((keyCycles % WALK_DELAY) == 0) {
+                boolean move = false;
+
                 switch (lastKeyPressed) {
                     case KeyEvent.VK_LEFT:
                         if(curMap.moveMapX(player.getX(), -1)) {
                             int nextMValue = curMap.getMValue(curMap.getMY(), curMap.getMX() - 1);
-                            boolean move = true;
                             
                             // Switch statements mainly to check if we need to
                             // change animations or special interaction e.g. cliffs,
                             // entering caves, etc.
-                            switch(nextMValue) {
-                                case PokemonMap.GRASS:
-                                    break;
-
-                                case PokemonMap.WALL:
-                                    move = false;
-                                    break;
-
-                                case PokemonMap.WEED:
-                                    break;
-                            }
+                            move = canMove(nextMValue);
 
                             if (move) {
                                 curMap.updateMX(-1);
@@ -217,7 +209,7 @@ public class PokemonGame extends JFrame {
                             }
                         }
                         else {
-                            player.moveLeft(curMap);
+                            move = player.moveLeft(curMap);
                         }
                         
                         break;
@@ -225,19 +217,8 @@ public class PokemonGame extends JFrame {
                     case KeyEvent.VK_RIGHT:
                         if(curMap.moveMapX(player.getX(), 1)) {
                             int nextMValue = curMap.getMValue(curMap.getMY(), curMap.getMX() + 1);
-                            boolean move = true;
                             
-                            switch(nextMValue) {
-                                case PokemonMap.GRASS:
-                                    break;
-
-                                case PokemonMap.WALL:
-                                    move = false;
-                                    break;
-
-                                case PokemonMap.WEED:
-                                    break;
-                            }
+                            move = canMove(nextMValue);
 
                             if (move) {
                                 curMap.updateMX(1);
@@ -247,7 +228,7 @@ public class PokemonGame extends JFrame {
                             }
                         }
                         else {
-                            player.moveRight(curMap);
+                            move = player.moveRight(curMap);
                         }
 
                         break;
@@ -255,16 +236,8 @@ public class PokemonGame extends JFrame {
                     case KeyEvent.VK_UP:
                         if(curMap.moveMapY(player.getY(), -1)) {
                             int nextMValue = curMap.getMValue(curMap.getMY() - 1, curMap.getMX());
-                            boolean move = true;
                             
-                            switch(nextMValue) {
-                                case PokemonMap.GRASS:
-                                    break;
-                                case PokemonMap.WALL:
-                                    break;
-                                case PokemonMap.WEED:
-                                    break;
-                            }
+                            move = canMove(nextMValue);
 
                             if (move) {
                                 curMap.updateMY(-1);
@@ -274,7 +247,7 @@ public class PokemonGame extends JFrame {
                             }
                         }
                         else {
-                            player.moveUp(curMap);
+                            move = player.moveUp(curMap);
                         }
 
                         break;
@@ -282,17 +255,8 @@ public class PokemonGame extends JFrame {
                     case KeyEvent.VK_DOWN:
                         if(curMap.moveMapY(player.getY(), 1)) {
                             int nextMValue = curMap.getMValue(curMap.getMY() + 1, curMap.getMX());
-                            boolean move = true;
                             
-                            switch(nextMValue) {
-                                case PokemonMap.GRASS:
-                                    break;
-                                case PokemonMap.WALL:
-                                    move = false;
-                                    break;
-                                case PokemonMap.WEED:
-                                    break;
-                            }
+                            move = canMove(nextMValue);
 
                             if (move) {
                                 curMap.updateMY(1);
@@ -302,10 +266,22 @@ public class PokemonGame extends JFrame {
                             }
                         }
                         else {
-                            player.moveDown(curMap);
+                            move = player.moveDown(curMap);
                         }
 
                         break;
+                }
+
+                // NOTE: Check weed or trainers
+                if (move) {
+                    if (curMap.curMValue() == PokemonMap.WEED) {
+                        randEncounter(80);
+                    }
+                    else {
+                        System.out.println("You're in a safe place! For now...");
+                    }
+
+                    System.out.println("---------------");
                 }
             }
 
@@ -323,22 +299,14 @@ public class PokemonGame extends JFrame {
                 lastKeyPressed = kc;
                 keyCycles = 0;
 
+                boolean move = false;
+
                 switch (kc) {
                     case KeyEvent.VK_LEFT:
                         if(curMap.moveMapX(player.getX(), -1)) {
                             int nextMValue = curMap.getMValue(curMap.getMY(), curMap.getMX() - 1);
-                            boolean move = true;
                             
-                            switch(nextMValue) {
-                                case PokemonMap.GRASS:
-                                    break;
-
-                                case PokemonMap.WALL:
-                                    break;
-
-                                case PokemonMap.WEED:
-                                    break;
-                            }
+                            move = canMove(nextMValue);
 
                             if (move) {
                                 curMap.updateMX(-1);
@@ -348,7 +316,7 @@ public class PokemonGame extends JFrame {
                             }
                         }
                         else {
-                            player.moveLeft(curMap);
+                            move = player.moveLeft(curMap);
                         }
                         
                         break;
@@ -356,19 +324,8 @@ public class PokemonGame extends JFrame {
                     case KeyEvent.VK_RIGHT:
                         if(curMap.moveMapX(player.getX(), 1)) {
                             int nextMValue = curMap.getMValue(curMap.getMY(), curMap.getMX() + 1);
-                            boolean move = true;
                             
-                            switch(nextMValue) {
-                                case PokemonMap.GRASS:
-                                    break;
-
-                                case PokemonMap.WALL:
-                                    move = false;
-                                    break;
-
-                                case PokemonMap.WEED:
-                                    break;
-                            }
+                            move = canMove(nextMValue);
 
                             if (move) {
                                 curMap.updateMX(1);
@@ -378,7 +335,7 @@ public class PokemonGame extends JFrame {
                             }
                         }
                         else {
-                            player.moveRight(curMap);
+                           move = player.moveRight(curMap);
                         }
 
                         break;
@@ -386,19 +343,8 @@ public class PokemonGame extends JFrame {
                     case KeyEvent.VK_UP:
                         if(curMap.moveMapY(player.getY(), -1)) {
                             int nextMValue = curMap.getMValue(curMap.getMY() - 1, curMap.getMX());
-                            boolean move = true;
                             
-                            switch(nextMValue) {
-                                case PokemonMap.GRASS:
-                                    break;
-
-                                case PokemonMap.WALL:
-                                    move = false;
-                                    break;
-
-                                case PokemonMap.WEED:
-                                    break;
-                            }
+                            move = canMove(nextMValue);
 
                             if (move) {
                                 curMap.updateMY(-1);
@@ -408,7 +354,7 @@ public class PokemonGame extends JFrame {
                             }
                         }
                         else {
-                            player.moveUp(curMap);
+                            move = player.moveUp(curMap);
                         }
 
                         break;
@@ -416,19 +362,8 @@ public class PokemonGame extends JFrame {
                     case KeyEvent.VK_DOWN:
                         if(curMap.moveMapY(player.getY(), 1)) {
                             int nextMValue = curMap.getMValue(curMap.getMY() + 1, curMap.getMX());
-                            boolean move = true;
                             
-                            switch(nextMValue) {
-                                case PokemonMap.GRASS:
-                                    break;
-
-                                case PokemonMap.WALL:
-                                    move = false;
-                                    break;
-
-                                case PokemonMap.WEED:
-                                    break;
-                            }
+                            move = canMove(nextMValue);
 
                             if (move) {
                                 curMap.updateMY(1);
@@ -438,10 +373,22 @@ public class PokemonGame extends JFrame {
                             }
                         }
                         else {
-                            player.moveDown(curMap);
+                            move = player.moveDown(curMap);
                         }
 
                         break;
+                }
+
+                // NOTE: Check weed or trainers
+                if (move) {
+                    if (curMap.curMValue() == PokemonMap.WEED) {
+                        randEncounter(80);
+                    }
+                    else {
+                        System.out.println("You're in a safe place! For now...");
+                    }
+
+                    System.out.println("---------------");
                 }
             }
             
@@ -459,6 +406,36 @@ public class PokemonGame extends JFrame {
                     gameScreenTick();
                 }
             }
+        }
+
+        private boolean canMove(int nextValue) {
+            switch(nextValue) {
+                case PokemonMap.GRASS:
+                    return true;
+
+                case PokemonMap.WALL:
+                    return false;
+
+                case PokemonMap.WEED:
+                    return true;
+            }
+
+            return true;
+        }
+
+        private boolean randEncounter(int percent) {
+            Random r = new Random();
+            int num = r.nextInt(100) + 1;
+
+            System.out.println("Random number generated: " + num);
+
+            if (num > percent) {
+                System.out.println("You have encountered a wild Pokemon!");
+                return true;
+            }
+            
+            System.out.println("No wild Pokemon yet...");
+            return false;
         }
     } // end class GamePanel
 

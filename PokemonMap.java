@@ -76,7 +76,6 @@ public class PokemonMap {
         System.out.println("mX: " + mX);
         System.out.println("mY: " + mY);
         System.out.println("Current matrix value: " + mapMatrix[mY][mX]);
-        System.out.println("--------");
     }
 
     public BufferedImage getCurImage() {

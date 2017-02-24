@@ -43,120 +43,102 @@ public class Player {
 	}
 
 	// Adjusting the position on player move
-	public void moveLeft(PokemonMap map) {
+	public boolean moveLeft(PokemonMap map) {
+		boolean move = false;
+
 		if (posX >= STEP_SIZE) {
 			int nextMValue = map.getMValue(map.getMY(), map.getMX() - 1);
-			boolean move = true;
-                            
-            switch(nextMValue) {
-                case PokemonMap.GRASS:
-                    break;
 
-                case PokemonMap.WALL:
-                	move = false;
-                	break;
-
-                case PokemonMap.WEED:
-                	break;
-            }
+            move = canMove(nextMValue);
 
             if (move) {
             	posX -= STEP_SIZE;
 				map.updateMX(-1);
-			}
 
-			System.out.println("mX: " + map.getMX());
-			System.out.println("mY: " + map.getMY());
-			System.out.println("Current matrix value: " + map.curMValue());
-			System.out.println("--------");
+				System.out.println("mX: " + map.getMX());
+				System.out.println("mY: " + map.getMY());
+				System.out.println("Current matrix value: " + map.curMValue());
+			}
 		}
+
+		return move;
 	}
 
-	public void moveRight(PokemonMap map) {
+	public boolean moveRight(PokemonMap map) {
+		boolean move = false;
+
 		if (posX <= PokemonGame.PANEL_WIDTH - 2 * STEP_SIZE) {
-
 			int nextMValue = map.getMValue(map.getMY(), map.getMX() + 1);
-			boolean move = true;
                             
-            switch(nextMValue) {
-                case PokemonMap.GRASS:
-                    break;
-
-                case PokemonMap.WALL:
-                	move = false;
-                	break;
-
-                case PokemonMap.WEED:
-                	break;
-            }
+            move = canMove(nextMValue);
 
             if (move) {
 				posX += STEP_SIZE;
 				map.updateMX(1);
-			}
 
-			System.out.println("mX: " + map.getMX());
-			System.out.println("mY: " + map.getMY());
-			System.out.println("Current matrix value: " + map.curMValue());
-			System.out.println("--------");
+				System.out.println("mX: " + map.getMX());
+				System.out.println("mY: " + map.getMY());
+				System.out.println("Current matrix value: " + map.curMValue());
+			}
 		}
+
+		return move;
 	}
 
-	public void moveUp(PokemonMap map) {
+	public boolean moveUp(PokemonMap map) {
+		boolean move = false;
+
 		if (posY >= STEP_SIZE) {
 			int nextMValue = map.getMValue(map.getMY() - 1, map.getMX());
-			boolean move = true;
                             
-            switch(nextMValue) {
-                case PokemonMap.GRASS:
-                    break;
-
-                case PokemonMap.WALL:
-                	move = false;
-                	break;
-
-                case PokemonMap.WEED:
-                	break;
-            }
+            move = canMove(nextMValue);
 
             if (move) {
 				posY -= STEP_SIZE;
 				map.updateMY(-1);
-			}
 
-			System.out.println("mX: " + map.getMX());
-			System.out.println("mY: " + map.getMY());
-			System.out.println("Current matrix value: " + map.curMValue());
-			System.out.println("--------");
+				System.out.println("mX: " + map.getMX());
+				System.out.println("mY: " + map.getMY());
+				System.out.println("Current matrix value: " + map.curMValue());
+			}
 		}
+
+		return move;
 	}
 
-	public void moveDown(PokemonMap map) {
+	public boolean moveDown(PokemonMap map) {
+		boolean move = false;
+
 		if (posY <= PokemonGame.PANEL_HEIGHT - 2 * STEP_SIZE) {
 			int nextMValue = map.getMValue(map.getMY() + 1, map.getMX());
-			boolean move = true;
                             
-            switch(nextMValue) {
-                case PokemonMap.GRASS:
-                    break;
-
-                case PokemonMap.WALL:
-                	move = false;
-                	break;
-
-                case PokemonMap.WEED:
-                	break;
-            }
+            move = canMove(nextMValue);
 
             if (move) {
 				posY += STEP_SIZE;
 				map.updateMY(1);
-			}
 
-			System.out.println("mX: " + map.getMX());
-			System.out.println("mY: " + map.getMY());
-			System.out.println("Current matrix value: " + map.curMValue());
-			System.out.println("--------");
+				System.out.println("mX: " + map.getMX());
+				System.out.println("mY: " + map.getMY());
+				System.out.println("Current matrix value: " + map.curMValue());
+			}
 		}
+
+		return move;
 	}
+
+	private boolean canMove(int nextValue) {
+        switch(nextValue) {
+            case PokemonMap.GRASS:
+                return true;
+
+            case PokemonMap.WALL:
+                return false;
+
+            case PokemonMap.WEED:
+                return true;
+            }
+
+        return true;
+    }
 }
