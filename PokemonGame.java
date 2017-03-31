@@ -29,6 +29,8 @@ public class PokemonGame extends JFrame {
     private StartPanel startScreen;
     private GamePanel gameScreen;
     private MenuPanel menuScreen;
+    private BattlePanel battleScreen;
+    private BattleMenuPanel battleMenuScreen;
     
     public static void main(String[] args) {
         PokemonGame game = new PokemonGame();
@@ -56,6 +58,19 @@ public class PokemonGame extends JFrame {
         add(gameScreen);
         add(menuScreen);
         gameScreen.requestFocusInWindow();
+        invalidate();
+        validate();
+    }
+
+    public void startBattle() {
+        battleScreen = new BattlePanel();
+        battleMenuScreen = new BattleMenuPanel();
+        
+        remove(gameScreen);
+        remove(menuScreen);
+        add(battleScreen);
+        add(battleMenuScreen);
+        battleMenuScreen.requestFocusInWindow();
         invalidate();
         validate();
     }
@@ -431,11 +446,23 @@ public class PokemonGame extends JFrame {
 
             if (num > percent) {
                 System.out.println("You have encountered a wild Pokemon!");
+                disable();
+                startBattle();
                 return true;
             }
             
             System.out.println("No wild Pokemon yet...");
             return false;
+        }
+
+        public void disable() {
+            enabled = false;
+            lastKeyPressed = KeyEvent.VK_UNDEFINED;
+            keyCycles = 0;
+        }
+
+        public void enable() {
+            enabled = true;
         }
     } // end class GamePanel
 
@@ -497,8 +524,7 @@ public class PokemonGame extends JFrame {
         
         public BattlePanel() {
             enabled = true;
-            this.setFocusable(true);
-            addKeyListener(new BattleKeyListener());
+            this.setFocusable(false);
             
             // Fires to render every 10 ms
             Timer t = new Timer(10, new TimerListener());
@@ -512,6 +538,46 @@ public class PokemonGame extends JFrame {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.drawString("hi", 20, 20);
+            
+            // Render stuff
+            
+            requestFocus();
+        } // end method paintComponent
+        
+        private void battleScreenTick() {
+            repaint();
+        }
+        
+        public class TimerListener implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                if (enabled) {
+                    battleScreenTick();
+                }
+            }
+        }
+    } // end class BattlePanel
+
+    //-------------------------------Battle Menu Screen--------------------------------
+    public class BattleMenuPanel extends JPanel {
+        private boolean enabled;
+        
+        public BattleMenuPanel() {
+            enabled = true;
+            this.setFocusable(true);
+            addKeyListener(new BattleKeyListener());
+            
+            // Fires to render every 10 ms
+            Timer t = new Timer(10, new TimerListener());
+            t.start();
+        }
+        
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.drawString("menu!!", 20, 20);
             
             // Render stuff
             
@@ -543,5 +609,5 @@ public class PokemonGame extends JFrame {
                 }
             }
         }
-    } // end class GamePanel
+    } // end class BattleMenuPanel
 }
