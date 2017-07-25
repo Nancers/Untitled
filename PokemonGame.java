@@ -115,7 +115,7 @@ public class PokemonGame extends JFrame {
             // Fires to render every 10 ms
             Timer t = new Timer(10, new TimerListener());
             t.start();
-
+            
             player = new Player(START_X, START_Y);
 
             lastKeyPressed = KeyEvent.VK_UNDEFINED;
@@ -206,6 +206,7 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurX(-1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
+                                player.updateSprite(Player.LEFT_STOP);
                             }
                         }
                         else {
@@ -225,6 +226,7 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurX(1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
+                                player.updateSprite(Player.RIGHT_STOP);
                             }
                         }
                         else {
@@ -244,6 +246,7 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurY(-1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
+                                player.updateSprite(Player.BACK_STOP);
                             }
                         }
                         else {
@@ -263,6 +266,7 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurY(1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
+                                player.updateSprite(Player.FRONT_STOP);
                             }
                         }
                         else {
@@ -313,6 +317,7 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurX(-1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
+                                player.updateSprite(Player.LEFT_STOP);
                             }
                         }
                         else {
@@ -332,6 +337,7 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurX(1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
+                                player.updateSprite(Player.RIGHT_STOP);
                             }
                         }
                         else {
@@ -351,6 +357,7 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurY(-1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
+                                player.updateSprite(Player.BACK_STOP);
                             }
                         }
                         else {
@@ -370,6 +377,7 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurY(1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
+                                player.updateSprite(Player.FRONT_STOP);
                             }
                         }
                         else {

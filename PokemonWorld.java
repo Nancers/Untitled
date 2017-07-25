@@ -8,6 +8,9 @@ import java.io.*;
 
 public class PokemonWorld {
 
+    /* locF: location filename
+     * mapF: map filename
+     */
     public static HashMap<String, String[]> fillWorld(String locF, String mapF) {
         //Part 1: Populate array of locations
         ArrayList<String> locations   = new ArrayList<String>();
