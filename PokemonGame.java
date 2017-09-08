@@ -6,6 +6,8 @@ import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Insert file/class javadoc here
@@ -21,6 +23,7 @@ public class PokemonGame extends JFrame {
     public static final int START_Y = 150;
     public static final int MIDDLE_X = 350;
     public static final int MIDDLE_Y = 150;
+    public static final int RUN_KEY = KeyEvent.VK_Z;
     
     // Declaration of primary panels
     // There may only be one primary panel active at a time. Subpanels, such as
@@ -114,11 +117,13 @@ public class PokemonGame extends JFrame {
         private PokemonMap curMap;
         private BufferedImage mapImage;
         private Player player;
+        private ArrayList<Integer> keys;
 
         // Player movement variables
         private static final int WALK_DELAY = 30;
         int lastKeyPressed;
         int keyCycles;
+        
         
 
         // Do game initializations here
@@ -135,6 +140,7 @@ public class PokemonGame extends JFrame {
 
             lastKeyPressed = KeyEvent.VK_UNDEFINED;
             keyCycles = 0;
+            keys = new ArrayList<Integer>();
 
             // Load current map
             // TODO: Need to write a way to read matrices. For now just reading
@@ -197,6 +203,7 @@ public class PokemonGame extends JFrame {
             requestFocus();
         } // end method paintComponent
         
+        // Keys pressed continuously
         private void gameScreenTick() {
             // Operations for moving when a key is held
             // TODO: Need to check if the player can move onto the tile before
@@ -221,11 +228,30 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurX(-1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
-                                player.updateSprite(Player.LEFT_STOP);
+                                
+                                // switch legs in animation
+                                if(keys.contains(RUN_KEY)) {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.LEFT_RUN_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.LEFT_RUN_2);
+                                    }
+                                }
+                                else {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.LEFT_WALK);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.LEFT_STOP);
+                                    }
+                                }
+
+                                player.switchLegs();
                             }
                         }
                         else {
-                            move = player.moveLeft(curMap);
+                            move = player.moveLeft(curMap, keys);
                         }
                         
                         break;
@@ -241,11 +267,30 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurX(1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
-                                player.updateSprite(Player.RIGHT_STOP);
+                                
+                                // switch legs in animation
+                                if(keys.contains(RUN_KEY)) {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.RIGHT_RUN_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.RIGHT_RUN_2);
+                                    }
+                                }
+                                else {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.RIGHT_WALK);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.RIGHT_STOP);
+                                    }
+                                }
+
+                                player.switchLegs();
                             }
                         }
                         else {
-                            move = player.moveRight(curMap);
+                            move = player.moveRight(curMap, keys);
                         }
 
                         break;
@@ -261,11 +306,36 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurY(-1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
-                                player.updateSprite(Player.BACK_STOP);
+
+                                // switch legs in animation
+                                if(keys.contains(RUN_KEY)) {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.BACK_RUN_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.BACK_RUN_2);
+                                    }
+                                }
+                                else {
+                                    if(player.getLegs() == 0) {
+                                        player.updateSprite(Player.BACK_WALK_1);
+                                    }
+                                    else if(player.getLegs() == 1){
+                                        player.updateSprite(Player.BACK_STOP);
+                                    }
+                                    else if(player.getLegs() == 2){
+                                        player.updateSprite(Player.BACK_WALK_2);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.BACK_STOP);
+                                    }
+                                }
+
+                                player.switchLegs();
                             }
                         }
                         else {
-                            move = player.moveUp(curMap);
+                            move = player.moveUp(curMap, keys);
                         }
 
                         break;
@@ -281,11 +351,36 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurY(1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
-                                player.updateSprite(Player.FRONT_STOP);
+
+                                // switch legs in animation
+                                if(keys.contains(RUN_KEY)) {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.FRONT_RUN_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.FRONT_RUN_2);
+                                    }
+                                }
+                                else {
+                                    if(player.getLegs() == 0) {
+                                        player.updateSprite(Player.FRONT_WALK_1);
+                                    }
+                                    else if(player.getLegs() == 1){
+                                        player.updateSprite(Player.FRONT_STOP);
+                                    }
+                                    else if(player.getLegs() == 2){
+                                        player.updateSprite(Player.FRONT_WALK_2);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.FRONT_STOP);
+                                    }
+                                }
+
+                                player.switchLegs();
                             }
                         }
                         else {
-                            move = player.moveDown(curMap);
+                            move = player.moveDown(curMap, keys);
                         }
 
                         break;
@@ -294,7 +389,7 @@ public class PokemonGame extends JFrame {
                 // NOTE: Check weed or trainers
                 if (move) {
                     if (curMap.curMValue() == PokemonMap.WEED) {
-                        randEncounter(80);
+                        randEncounter(100);
                     }
                     else {
                         System.out.println("You're in a safe place! For now...");
@@ -307,16 +402,19 @@ public class PokemonGame extends JFrame {
             repaint();
         }
 
-
+        // Keys pressed once instead of continuously; character should be walking
         protected class GameKeyListener implements KeyListener {
             public void keyPressed(KeyEvent e) {
                 int kc = e.getKeyCode();
+                keys.add(kc);
                 // Handle held keys separately from the OS's implementation
                 if (kc == lastKeyPressed)
                     return;
 
                 lastKeyPressed = kc;
                 keyCycles = 0;
+
+                //System.out.println("After adding, " + Arrays.toString(keys.toArray()));
 
                 boolean move = false;
 
@@ -332,11 +430,24 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurX(-1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
-                                player.updateSprite(Player.LEFT_STOP);
+
+                                if(keys.contains(RUN_KEY)) {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.LEFT_RUN_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.LEFT_RUN_2);
+                                    }
+                                }
+                                else {
+                                    player.updateSprite(Player.LEFT_WALK);
+                                }
+
+                                player.switchLegs();
                             }
                         }
                         else {
-                            move = player.moveLeft(curMap);
+                            move = player.moveLeft(curMap, keys);
                         }
                         
                         break;
@@ -352,11 +463,24 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurX(1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
-                                player.updateSprite(Player.RIGHT_STOP);
+                                
+                                if(keys.contains(RUN_KEY)) {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.RIGHT_RUN_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.RIGHT_RUN_2);
+                                    }
+                                }
+                                else {
+                                    player.updateSprite(Player.RIGHT_WALK);
+                                }
+
+                                player.switchLegs();
                             }
                         }
                         else {
-                           move = player.moveRight(curMap);
+                           move = player.moveRight(curMap, keys);
                         }
 
                         break;
@@ -372,11 +496,29 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurY(-1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
-                                player.updateSprite(Player.BACK_STOP);
+
+                                if(keys.contains(RUN_KEY)) {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.BACK_RUN_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.BACK_RUN_2);
+                                    }
+                                }
+                                else {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.BACK_WALK_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.BACK_WALK_2);
+                                    }
+                                }
+
+                                player.switchLegs();
                             }
                         }
                         else {
-                            move = player.moveUp(curMap);
+                            move = player.moveUp(curMap, keys);
                         }
 
                         break;
@@ -392,11 +534,30 @@ public class PokemonGame extends JFrame {
                                 curMap.updateCurY(1);
                                 curMap.updateCurImage();
                                 mapImage = curMap.getCurImage();
-                                player.updateSprite(Player.FRONT_STOP);
+
+                                // switch legs in animation
+                                if(keys.contains(RUN_KEY)) {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.FRONT_RUN_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.FRONT_RUN_2);
+                                    }
+                                }
+                                else {
+                                    if(player.getLegs() % 2 == 0) {
+                                        player.updateSprite(Player.FRONT_WALK_1);
+                                    }
+                                    else {
+                                        player.updateSprite(Player.FRONT_WALK_2);
+                                    }
+                                }
+
+                                player.switchLegs();
                             }
                         }
                         else {
-                            move = player.moveDown(curMap);
+                            move = player.moveDown(curMap, keys);
                         }
 
                         break;
@@ -405,7 +566,7 @@ public class PokemonGame extends JFrame {
                 // NOTE: Check weed or trainers
                 if (move) {
                     if (curMap.curMValue() == PokemonMap.WEED) {
-                        randEncounter(80);
+                        randEncounter(100);
                     }
                     else {
                         System.out.println("You're in a safe place! For now...");
@@ -416,11 +577,47 @@ public class PokemonGame extends JFrame {
             }
             
             public void keyReleased(KeyEvent e) {
+                try {
+                    Thread.sleep(100);
+                } catch(InterruptedException m) {
+                        System.out.println("Sleep interrupted somehow :(");
+                }
+
+                int kc = e.getKeyCode();
+                int i = keys.indexOf(kc);
+                
+                if (i != -1) {
+                    keys.remove(i);
+                }
+
+                //System.out.println("After removing, " + Arrays.toString(keys.toArray()));
+                
+
+                switch (kc) {
+                    case KeyEvent.VK_LEFT:
+                        player.updateSprite(Player.LEFT_STOP);
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        player.updateSprite(Player.RIGHT_STOP);
+                        break;
+                    case KeyEvent.VK_UP:
+                        player.updateSprite(Player.BACK_STOP);
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        player.updateSprite(Player.FRONT_STOP);
+                }
+
+                player.resetLegs();
+        
                 lastKeyPressed = KeyEvent.VK_UNDEFINED;
                 keyCycles = 0;
             }
             
             public void keyTyped(KeyEvent e) {}
+
+            public ArrayList<Integer> getKeys() {
+                return keys;
+            }
         }
         
         public class TimerListener implements ActionListener {
@@ -454,7 +651,7 @@ public class PokemonGame extends JFrame {
 
             if (num > percent) {
                 System.out.println("You have encountered a wild Pokemon!");
-                disable();
+                disableWorld();
                 startBattle();
                 return true;
             }
@@ -463,13 +660,13 @@ public class PokemonGame extends JFrame {
             return false;
         }
 
-        public void disable() {
+        public void disableWorld() {
             enabled = false;
             lastKeyPressed = KeyEvent.VK_UNDEFINED;
             keyCycles = 0;
         }
 
-        public void enable() {
+        public void enableWorld() {
             enabled = true;
         }
     } // end class GamePanel
